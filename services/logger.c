@@ -20,7 +20,41 @@
  * Private State
  *============================================================================*/
 
-static om_bool_t g_logger_initialized = false;
+static om_bool_t
+g_logger_initialized = false;
+
+
+/*==============================================================================
+ * Private Functions
+ *============================================================================*/
+
+/**
+ * @brief Write a formatted log message.
+ *
+ * @param prefix Log level prefix.
+ * @param format Message format string.
+ * @param args Format arguments.
+ */
+static void
+om_log_write(
+    const char *prefix,
+    const char *format,
+    va_list args)
+{
+    printf(
+        "%s",
+        prefix
+    );
+
+    vprintf(
+        format,
+        args
+    );
+
+    printf(
+        "\n"
+    );
+}
 
 
 /*==============================================================================
@@ -57,7 +91,6 @@ om_log_info(
         return;
     }
 
-
     va_list args;
 
     va_start(
@@ -65,22 +98,11 @@ om_log_info(
         format
     );
 
-
-    printf(
-        "[INFO] "
-    );
-
-
-    vprintf(
+    om_log_write(
+        "[INFO] ",
         format,
         args
     );
-
-
-    printf(
-        "\n"
-    );
-
 
     va_end(
         args
@@ -104,7 +126,6 @@ om_log_warning(
         return;
     }
 
-
     va_list args;
 
     va_start(
@@ -112,22 +133,11 @@ om_log_warning(
         format
     );
 
-
-    printf(
-        "[WARN] "
-    );
-
-
-    vprintf(
+    om_log_write(
+        "[WARN] ",
         format,
         args
     );
-
-
-    printf(
-        "\n"
-    );
-
 
     va_end(
         args
@@ -151,7 +161,6 @@ om_log_error(
         return;
     }
 
-
     va_list args;
 
     va_start(
@@ -159,22 +168,11 @@ om_log_error(
         format
     );
 
-
-    printf(
-        "[ERROR] "
-    );
-
-
-    vprintf(
+    om_log_write(
+        "[ERROR] ",
         format,
         args
     );
-
-
-    printf(
-        "\n"
-    );
-
 
     va_end(
         args
