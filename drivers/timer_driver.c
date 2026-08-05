@@ -1,20 +1,17 @@
- /**
-  * @file timer_driver.c
-  * @brief OrbitMesh timer driver wrapper implementation.
-  */
+/**
+ * @file timer_driver.c
+ * @brief OrbitMesh timer driver implementation.
+ */
 
-#include "orbitmesh/drivers/timer_driver.h"
+#include "orbitmesh/timer.h"
 
 #include "orbitmesh/error.h"
-#include "orbitmesh/timer.h"
 
 
 /**
- * @brief Initialize the timer driver.
+ * @brief Initialize timer driver.
  *
- * The timer HAL manages the timer hardware initialization internally.
- *
- * @return OM_SUCCESS on success.
+ * @return Operation status.
  */
 om_error_t
 om_timer_driver_init(void)
@@ -24,11 +21,11 @@ om_timer_driver_init(void)
 
 
 /**
- * @brief Start a timer instance.
+ * @brief Start timer instance.
  *
  * @param timer Timer instance.
  *
- * @return OM_SUCCESS on success.
+ * @return Operation status.
  */
 om_error_t
 om_timer_driver_start(
@@ -42,11 +39,11 @@ om_timer_driver_start(
 
 
 /**
- * @brief Stop a timer instance.
+ * @brief Stop timer instance.
  *
  * @param timer Timer instance.
  *
- * @return OM_SUCCESS on success.
+ * @return Operation status.
  */
 om_error_t
 om_timer_driver_stop(
@@ -60,14 +57,12 @@ om_timer_driver_stop(
 
 
 /**
- * @brief Get current timer tick count.
+ * @brief Get current timer tick value.
  *
- * Uses the HAL tick counter exposed through the timer subsystem.
- *
- * @return Current tick count.
+ * @return Tick count.
  */
 uint32_t
 om_timer_driver_get_ticks(void)
 {
-    return om_timer_tick_count();
+    return om_timer_tick();
 }
