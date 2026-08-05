@@ -41,14 +41,13 @@ om_error_t
 om_health_monitor_init(void);
 
 /**
- * @brief Report a system fault.
+ * @brief Report a health monitor fault.
  *
- * The parameter list must exactly match the implementation in
- * health_monitor.c.
+ * @param fault_code Numeric fault code.
  */
 void
 om_health_monitor_fault(
-    om_error_t error);
+    uint32_t fault_code);
 
 /**
  * @brief Get the current health state.
