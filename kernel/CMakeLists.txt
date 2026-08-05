@@ -31,8 +31,10 @@ set(ORBITMESH_KERNEL_SOURCES
 
 add_library(
     orbitmesh_kernel
-    STATIC
-    ${ORBITMESH_KERNEL_SOURCES}
+    kernel.c
+    task.c
+    tick.c
+    scheduler.c
 )
 
 target_include_directories(
