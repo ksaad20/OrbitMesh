@@ -10,20 +10,12 @@
 #include <assert.h>
 
 
-int
-main(void)
+void
+run_test_version(void)
 {
-    const char *version;
+    test_version_configuration();
 
+    test_version_write();
 
-    version =
-        om_version_string();
-
-
-    assert(
-        version != 0
-    );
-
-
-    return 0;
+    test_version_read();
 }
