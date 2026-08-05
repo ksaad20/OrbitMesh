@@ -4,14 +4,16 @@
 # High-level operating system services built on top of the kernel,
 # hardware abstraction layer, and device drivers.
 #
-# Services provide reusable functionality without exposing hardware details.
-#
-# Responsibilities:
+# Current MVP Services:
 #   - Logging
-#   - Serial console
-#   - Heartbeat
-#   - Software timers
 #   - Health monitoring
+#   - Telemetry
+#   - Event logging
+#
+# Planned Services:
+#   - Serial console
+#   - Software timers
+#   - Heartbeat
 #   - Diagnostics
 #   - Uptime service
 #   - Watchdog service
@@ -19,13 +21,22 @@
 
 set(ORBITMESH_SERVICE_SOURCES
     logger.c
-    console.c
-    software_timer.c
-    heartbeat.c
-    uptime.c
+
+    # Flight software services
     health_monitor.c
-    diagnostics.c
-    watchdog.c
+    telemetry.c
+    telemetry_packet.c
+    event_log.c
+
+    # --------------------------------------------------------------------------
+    # Planned services (enable as implemented)
+    # --------------------------------------------------------------------------
+    # console.c
+    # software_timer.c
+    # heartbeat.c
+    # uptime.c
+    # diagnostics.c
+    # watchdog.c
 )
 
 add_library(
@@ -45,7 +56,7 @@ target_link_libraries(
     PRIVATE
         orbitmesh_kernel
         orbitmesh_hal
-        orbitmesh_drivers
+        # orbitmesh_drivers
 )
 
 target_compile_features(
