@@ -9,9 +9,9 @@
  * @copyright Apache License 2.0
  */
 
-#include "orbitmesh/drivers/uart.h"
+#include "orbitmesh/uart.h"
 #include "orbitmesh/error.h"
-
+#include "orbitmesh/drivers/uart.h"
 
 /*==============================================================================
  * Public API
