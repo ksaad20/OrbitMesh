@@ -10,6 +10,8 @@
 
 #include "orbitmesh/timer.h"
 
+void
+run_test_scheduler(void);
 
 static void
 timer_callback(
@@ -106,11 +108,7 @@ run_test_timer(void)
 
 
 void
-run_test_timer(void)
+run_test_scheduler(void)
 {
-    test_timer_configuration();
-
-    test_timer_write();
-
-    test_timer_read();
+    test_scheduler();
 }
