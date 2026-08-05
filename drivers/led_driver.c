@@ -1,48 +1,37 @@
 /**
  * @file led_driver.c
- * @brief OrbitMesh LED driver.
- *
- * Provides a simple LED control interface built
- * on top of the GPIO driver layer.
- *
- * @author OrbitMesh Contributors
- * @copyright Apache License 2.0
+ * @brief OrbitMesh LED driver implementation.
  */
+
+#include <stdbool.h>
 
 #include "orbitmesh/gpio.h"
 #include "orbitmesh/error.h"
-#include "orbitmesh/types.h"
 
 
-/*==============================================================================
- * Private State
- *============================================================================*/
-
-static om_pin_t g_led_pin;
+#define OM_LED_PIN 0U
 
 
-/*==============================================================================
- * Public API
- *============================================================================*/
+static bool led_state = false;
+
 
 /**
  * @brief Initialize LED driver.
  *
- * @param pin GPIO pin connected to LED.
+ * Configures the LED GPIO pin as an output.
  *
- * @return OrbitMesh error code.
+ * @return Operation status.
  */
 om_error_t
-om_led_init(
-    om_pin_t pin)
+om_led_init(void)
 {
-    g_led_pin = pin;
-
+    om_gpio_config_t config = {
+        .mode = OM_GPIO_OUTPUT,
+    };
 
     return om_gpio_configure(
-        pin,
-        OM_GPIO_OUTPUT,
-        OM_GPIO_NO_PULL
+        OM_LED_PIN,
+        &config
     );
 }
 
@@ -50,14 +39,16 @@ om_led_init(
 /**
  * @brief Turn LED on.
  *
- * @return OrbitMesh error code.
+ * @return Operation status.
  */
 om_error_t
 om_led_on(void)
 {
+    led_state = true;
+
     return om_gpio_write(
-        g_led_pin,
-        OM_GPIO_HIGH
+        OM_LED_PIN,
+        true
     );
 }
 
@@ -65,14 +56,16 @@ om_led_on(void)
 /**
  * @brief Turn LED off.
  *
- * @return OrbitMesh error code.
+ * @return Operation status.
  */
 om_error_t
 om_led_off(void)
 {
+    led_state = false;
+
     return om_gpio_write(
-        g_led_pin,
-        OM_GPIO_LOW
+        OM_LED_PIN,
+        false
     );
 }
 
@@ -80,21 +73,15 @@ om_led_off(void)
 /**
  * @brief Toggle LED state.
  *
- * @return OrbitMesh error code.
+ * @return Operation status.
  */
 om_error_t
 om_led_toggle(void)
 {
-    static om_bool_t state = false;
-
-
-    state = !state;
-
+    led_state = !led_state;
 
     return om_gpio_write(
-        g_led_pin,
-        state
-            ? OM_GPIO_HIGH
-            : OM_GPIO_LOW
+        OM_LED_PIN,
+        led_state
     );
 }
