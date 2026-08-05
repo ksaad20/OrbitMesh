@@ -27,7 +27,7 @@
 om_error_t
 om_gpio_driver_init(void)
 {
-    return OM_ERROR_OK;
+    return OM_SUCCESS;;
 }
 
 
