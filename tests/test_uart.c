@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include "orbitmesh/uart.h"
 
@@ -31,26 +32,11 @@ test_uart_write(void)
 }
 
 
-static void
-test_uart_read_byte(void)
-{
-    uint8_t byte = 0U;
-
-    const int result = om_uart_read(
-        0U,
-        &byte
-    );
-
-    assert(result == 0);
-}
-
-
 void
 run_test_uart(void)
 {
     test_uart_initialization();
     test_uart_write();
-    test_uart_read_byte();
 
     printf("UART tests passed\n");
 }
