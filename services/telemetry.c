@@ -15,9 +15,7 @@
 #include "orbitmesh/kernel.h"
 #include "orbitmesh/telemetry_packet.h"
 
-
 static om_telemetry_packet_t g_packet;
-
 
 /**
  * @brief Initialize the telemetry service.
@@ -26,10 +24,8 @@ void
 om_telemetry_init(void)
 {
     om_telemetry_packet_init(
-        &g_packet
-    );
+        &g_packet);
 }
-
 
 /**
  * @brief Update the current telemetry packet.
@@ -41,7 +37,7 @@ void
 om_telemetry_update(void)
 {
     g_packet.uptime =
-        om_kernel_get_uptime();
+        om_kernel_uptime();
 
     g_packet.health =
         om_health_monitor_state();
@@ -50,10 +46,8 @@ om_telemetry_update(void)
         om_event_log_count();
 
     om_telemetry_packet_finalize(
-        &g_packet
-    );
+        &g_packet);
 }
-
 
 /**
  * @brief Get the latest telemetry packet.
@@ -65,7 +59,6 @@ om_telemetry_packet(void)
 {
     return &g_packet;
 }
-
 
 /**
  * @brief Transmit the current telemetry packet.
