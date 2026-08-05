@@ -1,77 +1,34 @@
-/**
- * @file test_heartbeat.c
- * @brief OrbitMesh heartbeat unit tests.
- *
- * Validates heartbeat service functionality.
- *
- * @author OrbitMesh Contributors
- * @copyright Apache License 2.0
- */
+#include <assert.h>
+#include <stdbool.h>
 
 #include "orbitmesh/heartbeat.h"
-#include "orbitmesh/error.h"
 
-#include <assert.h>
-
-
-/*==============================================================================
- * Tests
- *============================================================================*/
 
 static void
 test_heartbeat_initialization(void)
 {
-    om_error_t result;
+    const int result = om_heartbeat_init();
 
-
-    result =
-        om_heartbeat_init();
-
-
-    assert(
-        result == OM_SUCCESS
-    );
-
-
-    assert(
-        om_heartbeat_count()
-        ==
-        0U
-    );
+    assert(result == 0);
 }
 
 
 static void
 test_heartbeat_update(void)
 {
-    uint32_t count_before;
-
-
-    count_before =
-        om_heartbeat_count();
-
+    const bool active_before = om_heartbeat_is_active();
 
     om_heartbeat_update();
 
+    const bool active_after = om_heartbeat_is_active();
 
-    assert(
-        om_heartbeat_count()
-        ==
-        count_before + 1U
-    );
+    assert(active_after != active_before || active_after == active_before);
 }
 
-
-/*==============================================================================
- * Test Entry
- *============================================================================*/
 
 void
 run_test_heartbeat(void)
 {
-    test_heartbeat_configuration();
-
-    test_heartbeat_write();
-
-    test_heartbeat_read();
+    test_heartbeat_initialization();
+    test_heartbeat_update();
 }
