@@ -1,8 +1,8 @@
 /**
  * @file uart_driver.c
- * @brief OrbitMesh UART driver interface implementation.
+ * @brief OrbitMesh UART driver implementation.
  *
- * Provides a driver-level abstraction over the UART HAL.
+ * Provides a simplified driver interface over UART HAL.
  *
  * @copyright Apache License 2.0
  */
@@ -16,7 +16,7 @@
 /**
  * @brief Initialize UART driver.
  *
- * @return OM_SUCCESS on success.
+ * @return OrbitMesh error code.
  */
 om_error_t
 om_uart_driver_init(void)
@@ -26,39 +26,22 @@ om_uart_driver_init(void)
 
 
 /**
- * @brief Write data through UART driver.
+ * @brief Transmit UART data.
  *
- * @param data Buffer containing bytes to transmit.
- * @param length Number of bytes to transmit.
+ * @param id UART peripheral identifier.
+ * @param data Data buffer.
+ * @param length Number of bytes.
  *
- * @return OM_SUCCESS on success.
+ * @return OrbitMesh error code.
  */
 om_error_t
 om_uart_driver_write(
+    om_uart_id_t id,
     const uint8_t *data,
     size_t length)
 {
     return om_uart_write(
-        data,
-        length
-    );
-}
-
-
-/**
- * @brief Read data through UART driver.
- *
- * @param data Buffer receiving bytes.
- * @param length Maximum number of bytes to read.
- *
- * @return OM_SUCCESS on success.
- */
-om_error_t
-om_uart_driver_read(
-    uint8_t *data,
-    size_t length)
-{
-    return om_uart_read(
+        id,
         data,
         length
     );
