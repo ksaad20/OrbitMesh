@@ -1,22 +1,21 @@
 /**
  * @file spi_driver.h
  * @brief OrbitMesh SPI driver interface.
- *
- * @copyright Apache License 2.0
  */
 
-#ifndef ORBITMESH_DRIVERS_SPI_DRIVER_H
-#define ORBITMESH_DRIVERS_SPI_DRIVER_H
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+#ifndef ORBITMESH_SPI_DRIVER_H
+#define ORBITMESH_SPI_DRIVER_H
 
 #include <stddef.h>
 #include <stdint.h>
 
 #include "orbitmesh/error.h"
+#include "orbitmesh/spi.h"
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 
 /**
@@ -29,16 +28,18 @@ om_spi_driver_init(void);
 
 
 /**
- * @brief Transfer SPI data.
+ * @brief Transfer data using SPI.
  *
+ * @param id SPI device identifier.
  * @param tx Transmit buffer.
  * @param rx Receive buffer.
- * @param length Number of bytes.
+ * @param length Transfer length.
  *
  * @return OrbitMesh error code.
  */
 om_error_t
 om_spi_driver_transfer(
+    om_spi_id_t id,
     const uint8_t *tx,
     uint8_t *rx,
     size_t length);
@@ -48,4 +49,4 @@ om_spi_driver_transfer(
 }
 #endif
 
-#endif /* ORBITMESH_DRIVERS_SPI_DRIVER_H */
+#endif /* ORBITMESH_SPI_DRIVER_H */
