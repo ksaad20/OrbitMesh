@@ -9,39 +9,12 @@
  * @copyright Apache License 2.0
  */
 
-#include "orbitmesh/error.h"
-
-#include <stdint.h>
-
-
-/*==============================================================================
- * External HAL Functions
- *============================================================================*/
-
-extern om_error_t
-om_watchdog_init(
-    uint32_t timeout_ms);
-
-
-extern om_error_t
-om_watchdog_feed(void);
-
-
-extern om_error_t
-om_watchdog_reset(void);
-
+#include "orbitmesh/drivers/watchdog_driver.h"
 
 /*==============================================================================
  * Public API
  *============================================================================*/
 
-/**
- * @brief Initialize watchdog driver.
- *
- * @param timeout_ms Reset timeout.
- *
- * @return OrbitMesh error code.
- */
 om_error_t
 om_watchdog_driver_init(
     uint32_t timeout_ms)
@@ -52,13 +25,6 @@ om_watchdog_driver_init(
 }
 
 
-/**
- * @brief Feed watchdog timer.
- *
- * Prevents system reset.
- *
- * @return OrbitMesh error code.
- */
 om_error_t
 om_watchdog_driver_feed(void)
 {
@@ -66,11 +32,6 @@ om_watchdog_driver_feed(void)
 }
 
 
-/**
- * @brief Force watchdog reset.
- *
- * @return OrbitMesh error code.
- */
 om_error_t
 om_watchdog_driver_reset(void)
 {
