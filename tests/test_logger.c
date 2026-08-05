@@ -12,19 +12,12 @@
 #include <assert.h>
 
 
-int
-main(void)
+void
+run_test_logger(void)
 {
-    om_log_init();
+    test_logger_configuration();
 
+    test_logger_write();
 
-    om_log_info(
-        "Logger test"
-    );
-
-
-    assert(1);
-
-
-    return 0;
+    test_logger_read();
 }
