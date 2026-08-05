@@ -15,6 +15,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "orbitmesh/drivers/spi_driver.h"
 #include "orbitmesh/error.h"
 
 #ifdef __cplusplus
