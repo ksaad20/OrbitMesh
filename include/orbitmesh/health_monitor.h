@@ -1,131 +1,67 @@
 /**
  * @file health_monitor.h
- * @brief OrbitMesh health monitoring service.
+ * @brief OrbitMesh health monitoring service interface.
  *
- * Provides a centralized interface for monitoring
- * overall spacecraft and operating system health.
+ * Provides a lightweight health monitoring interface for
+ * OrbitMesh services and system diagnostics.
  *
- * SPDX-License-Identifier: Apache-2.0
+ * @author OrbitMesh Contributors
+ * @copyright Apache License 2.0
  */
 
 #ifndef ORBITMESH_HEALTH_MONITOR_H
 #define ORBITMESH_HEALTH_MONITOR_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
-#include <stdint.h>
+#include "orbitmesh/error.h"
 
+/*==============================================================================
+ * Public Types
+ *============================================================================*/
 
 /**
- * @brief Overall system health state.
+ * @brief Health monitor status.
  */
 typedef enum
 {
-    OM_HEALTH_OK = 0,
-    OM_HEALTH_WARNING,
-    OM_HEALTH_ERROR,
-    OM_HEALTH_CRITICAL
-
-} om_health_state_t;
-
-
-/**
- * @brief Health monitor statistics.
- */
-typedef struct
-{
-    /**
-     * @brief Current system health.
-     */
-    om_health_state_t state;
-
-    /**
-     * @brief Number of detected faults.
-     */
-    uint32_t fault_count;
-
-    /**
-     * @brief Number of health monitor updates.
-     */
-    uint32_t heartbeat_count;
-
+    OM_HEALTH_STATUS_OK = 0,
+    OM_HEALTH_STATUS_WARNING,
+    OM_HEALTH_STATUS_FAULT
 } om_health_status_t;
 
+/*==============================================================================
+ * Public API
+ *============================================================================*/
 
 /**
- * @brief Initialize the health monitor.
+ * @brief Initialize the health monitoring service.
+ *
+ * @return OrbitMesh error code.
  */
-void
+om_error_t
 om_health_monitor_init(void);
 
-
 /**
- * @brief Update the health monitor.
+ * @brief Report a health fault.
  *
- * Call periodically from the scheduler.
+ * @param module Name of the reporting module.
+ * @param error OrbitMesh error code.
  */
 void
-om_health_monitor_update(void);
-
+om_health_monitor_fault(
+    const char *module,
+    om_error_t error);
 
 /**
- * @brief Set the current health state.
+ * @brief Get the current health status.
  *
- * @param state New health state.
+ * @return Current health status.
  */
-void
-om_health_monitor_set_state(
-    om_health_state_t state
-);
-
-
-/**
- * @brief Report a system fault.
- */
-void
-om_health_monitor_report_fault(void);
-
-
-/**
- * @brief Get the current health state.
- *
- * @return Current health state.
- */
-om_health_state_t
-om_health_monitor_state(void);
-
-
-/**
- * @brief Get the total number of faults.
- *
- * @return Fault count.
- */
-uint32_t
-om_health_monitor_fault_count(void);
-
-
-/**
- * @brief Get the heartbeat counter.
- *
- * @return Heartbeat count.
- */
-uint32_t
-om_health_monitor_heartbeat(void);
-
-
-/**
- * @brief Get a snapshot of the current health status.
- *
- * @param status Pointer to the destination structure.
- */
-void
-om_health_monitor_status(
-    om_health_status_t *status
-);
-
+om_health_status_t
+om_health_monitor_status(void);
 
 #ifdef __cplusplus
 }
