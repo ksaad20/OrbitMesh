@@ -10,9 +10,6 @@
 
 #include "orbitmesh/timer.h"
 
-void
-run_test_scheduler(void);
-
 static void
 timer_callback(
     void *argument
@@ -91,7 +88,7 @@ test_timer_ticks(void)
  * Test Entry
  *============================================================================*/
 
-static void
+void
 run_test_timer(void)
 {
     test_timer_initialization();
@@ -100,15 +97,10 @@ run_test_timer(void)
 
     test_timer_ticks();
 
-
     printf(
         "Timer tests passed\n"
     );
 }
 
-
 void
-run_test_scheduler(void)
-{
-    test_scheduler();
-}
+run_test_timer(void);
