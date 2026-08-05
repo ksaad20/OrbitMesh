@@ -18,6 +18,19 @@ void run_test_uart(void);
 void run_test_health_monitor(void);
 void run_test_heartbeat(void);
 
+add_executable(
+    orbitmesh_tests
+    main.c
+    test_kernel.c
+    test_task.c
+    test_scheduler.c
+    test_timer.c
+    test_hal.c
+    test_gpio.c
+    test_uart.c
+    test_health_monitor.c
+    test_heartbeat.c
+)
 
 int
 main(void)
