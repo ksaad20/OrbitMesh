@@ -2,9 +2,6 @@
  * @file heartbeat.h
  * @brief OrbitMesh heartbeat service.
  *
- * Provides a lightweight heartbeat mechanism for satellite
- * health monitoring and service liveness tracking.
- *
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -30,27 +27,27 @@ om_heartbeat_init(void);
 
 
 /**
- * @brief Send heartbeat signal.
+ * @brief Update heartbeat state.
  *
- * Updates the heartbeat counter and timestamp.
+ * Increments the heartbeat counter.
  *
  * @return OM_SUCCESS on success.
  */
 om_error_t
-om_heartbeat_signal(void);
+om_heartbeat_update(void);
 
 
 /**
  * @brief Get heartbeat count.
  *
- * @return Number of heartbeat signals generated.
+ * @return Current heartbeat count.
  */
 om_tick_t
 om_heartbeat_count(void);
 
 
 /**
- * @brief Reset heartbeat counter.
+ * @brief Reset heartbeat state.
  *
  * @return OM_SUCCESS on success.
  */
