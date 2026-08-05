@@ -177,7 +177,7 @@ om_tick_increment(void);
  */
 om_error_t
 om_timer_restart(
-    om_timer_id_t timer
+    om_timer_t *timer
 );
 
 /**
