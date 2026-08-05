@@ -12,6 +12,13 @@
 
 
 /**
+ * @brief Public test entry point.
+ */
+void
+run_test_scheduler(void);
+
+
+/**
  * @brief Verify scheduler initialization state.
  */
 static void
@@ -50,7 +57,7 @@ test_scheduler_task_system(void)
 
 
 /**
- * @brief Scheduler test entry point.
+ * @brief Execute scheduler tests.
  */
 static void
 test_scheduler(void)
@@ -62,7 +69,7 @@ test_scheduler(void)
 
 
 /**
- * @brief Run scheduler tests.
+ * @brief Run scheduler test suite.
  */
 void
 run_test_scheduler(void)
