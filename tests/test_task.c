@@ -76,9 +76,10 @@ test_task_delay(void)
 void
 run_test_task(void)
 {
-    test_task_configuration();
+    test_task_creation();
 
-    test_task_write();
-
-    test_task_read();
+    test_task_delay();
 }
+
+void
+run_test_task(void);
