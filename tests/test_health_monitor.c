@@ -76,13 +76,12 @@ test_fault_reporting(void)
  * Test Entry
  *============================================================================*/
 
-int
-main(void)
+void
+run_test_health_monitor(void)
 {
-    test_health_initialization();
+    test_health_monitor_configuration();
 
-    test_fault_reporting();
+    test_health_monitor_write();
 
-
-    return 0;
+    test_health_monitor_read();
 }
