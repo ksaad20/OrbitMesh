@@ -56,13 +56,17 @@ test_kernel_state(void)
 static void
 test_kernel_uptime(void)
 {
-    om_tick_t uptime;
+    om_tick_t uptime_before;
+    om_tick_t uptime_after;
 
-    uptime =
+    uptime_before =
+        om_kernel_uptime();
+
+    uptime_after =
         om_kernel_uptime();
 
     assert(
-        uptime >= 0U
+        uptime_after >= uptime_before
     );
 }
 
