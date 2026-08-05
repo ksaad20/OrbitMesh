@@ -19,10 +19,11 @@ test_uart_initialization(void)
 static void
 test_uart_write(void)
 {
-    const char message[] = "OrbitMesh";
+    const uint8_t message[] = "OrbitMesh";
 
     const int result = om_uart_write(
-        (const uint8_t *)message,
+        0U,
+        message,
         sizeof(message) - 1U
     );
 
@@ -36,6 +37,7 @@ test_uart_read_byte(void)
     uint8_t byte = 0U;
 
     const int result = om_uart_read(
+        0U,
         &byte
     );
 
