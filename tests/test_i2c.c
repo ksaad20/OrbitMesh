@@ -89,15 +89,12 @@ test_i2c_read(void)
  * Test Entry
  *============================================================================*/
 
-int
-main(void)
+void
+run_test_i2c(void)
 {
-    test_i2c_initialization();
+    test_i2c_configuration();
 
     test_i2c_write();
 
     test_i2c_read();
-
-
-    return 0;
 }
