@@ -21,14 +21,19 @@
 static void
 test_gpio_configuration(void)
 {
+    om_gpio_config_t config =
+    {
+        .pin = 1U,
+        .mode = OM_GPIO_OUTPUT,
+        .pull = OM_GPIO_PULL_NONE
+    };
+
     om_error_t result;
 
 
     result =
         om_gpio_configure(
-            1U,
-            OM_GPIO_OUTPUT,
-            OM_GPIO_NO_PULL
+            &config
         );
 
 
@@ -62,11 +67,19 @@ test_gpio_read(void)
 {
     om_gpio_level_t level;
 
+    om_error_t result;
 
-    level =
+
+    result =
         om_gpio_read(
-            1U
+            1U,
+            &level
         );
+
+
+    assert(
+        result == OM_SUCCESS
+    );
 
 
     assert(
