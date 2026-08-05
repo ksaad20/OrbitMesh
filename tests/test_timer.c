@@ -17,7 +17,8 @@ test_timer_initialization(void)
     om_error_t result;
 
 
-    result = om_timer_init();
+    result =
+        om_timer_init();
 
 
     assert(
@@ -34,13 +35,11 @@ test_timer_start(void)
     om_error_t result;
 
 
-    result = om_timer_create(
-        &timer,
-        1000U,
-        NULL,
-        NULL,
-        NULL
-    );
+    result =
+        om_timer_create(
+            &timer,
+            1000U
+        );
 
 
     assert(
@@ -48,9 +47,10 @@ test_timer_start(void)
     );
 
 
-    result = om_timer_start(
-        &timer
-    );
+    result =
+        om_timer_start(
+            &timer
+        );
 
 
     assert(
@@ -73,7 +73,11 @@ test_timer_ticks(void)
 }
 
 
-void
+/*==============================================================================
+ * Test Entry
+ *============================================================================*/
+
+static void
 run_test_timer(void)
 {
     test_timer_initialization();
@@ -86,4 +90,14 @@ run_test_timer(void)
     printf(
         "Timer tests passed\n"
     );
+}
+
+
+int
+main(void)
+{
+    run_test_timer();
+
+
+    return 0;
 }
