@@ -167,6 +167,20 @@ void
 om_tick_increment(void);
 
 /**
+ * @brief Restart a timer.
+ *
+ * Restarts an existing timer with its configured parameters.
+ *
+ * @param timer Timer identifier.
+ *
+ * @return OrbitMesh error code.
+ */
+om_error_t
+om_timer_restart(
+    om_timer_id_t timer
+);
+
+/**
  * @brief Get the current kernel tick.
  *
  * @return Current tick count.
