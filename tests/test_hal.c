@@ -13,20 +13,12 @@
 #include <assert.h>
 
 
-int
-main(void)
+void
+run_test_hal(void)
 {
-    om_error_t result;
+    test_hal_configuration();
 
+    test_hal_write();
 
-    result =
-        om_hal_init();
-
-
-    assert(
-        result == OM_SUCCESS
-    );
-
-
-    return 0;
+    test_hal_read();
 }
