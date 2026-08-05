@@ -2,7 +2,7 @@
  * @file task.c
  * @brief OrbitMesh task management implementation.
  *
- * Minimal cooperative task manager for MVP.
+ * Minimal cooperative task manager for the OrbitMesh MVP.
  *
  * @author OrbitMesh Contributors
  * @copyright Apache License 2.0
@@ -10,23 +10,38 @@
 
 #include "task_internal.h"
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 
 /*==============================================================================
- * Task Storage
+ * Internal Task Storage
  *============================================================================*/
 
+/**
+ * @brief Static task table.
+ */
 om_task_t g_tasks[OM_CONFIG_MAX_TASKS];
 
+/**
+ * @brief Allocation bitmap.
+ */
 bool g_task_used[OM_CONFIG_MAX_TASKS];
 
+/**
+ * @brief Currently executing task.
+ */
 om_task_t *g_current_task = NULL;
 
 /*==============================================================================
  * Internal Helpers
  *============================================================================*/
 
+/**
+ * @brief Reset a task control block.
+ *
+ * @param task Task to reset.
+ */
 static void
 om_task_clear(
     om_task_t *task)
@@ -37,20 +52,94 @@ om_task_clear(
         sizeof(*task)
     );
 
-    task->state = OM_TASK_UNUSED;
+    task->state = OM_TASK_TERMINATED;
+}
+
+/**
+ * @brief Allocate a free task slot.
+ *
+ * @return Free task or NULL.
+ */
+static om_task_t *
+om_task_allocate(void)
+{
+    for (om_size_t i = 0U;
+         i < OM_CONFIG_MAX_TASKS;
+         ++i)
+    {
+        if (!g_task_used[i])
+        {
+            g_task_used[i] = true;
+
+            om_task_clear(
+                &g_tasks[i]
+            );
+
+            g_tasks[i].id =
+                (om_task_id_t)(i + 1U);
+
+            return &g_tasks[i];
+        }
+    }
+
+    return NULL;
+}
+
+/**
+ * @brief Release a task slot.
+ *
+ * @param task Task to release.
+ */
+static void
+om_task_release(
+    om_task_t *task)
+{
+    if (task == NULL)
+    {
+        return;
+    }
+
+    for (om_size_t i = 0U;
+         i < OM_CONFIG_MAX_TASKS;
+         ++i)
+    {
+        if (&g_tasks[i] == task)
+        {
+            g_task_used[i] = false;
+
+            om_task_clear(
+                &g_tasks[i]
+            );
+
+            if (g_current_task == task)
+            {
+                g_current_task = NULL;
+            }
+
+            return;
+        }
+    }
 }
 
 /*==============================================================================
- * Task Initialization
+ * Public API
  *============================================================================*/
 
+/**
+ * @brief Initialize the task subsystem.
+ */
 om_error_t
 om_task_init(void)
 {
-    for (om_size_t i = 0U; i < OM_CONFIG_MAX_TASKS; ++i)
+    for (om_size_t i = 0U;
+         i < OM_CONFIG_MAX_TASKS;
+         ++i)
     {
-        om_task_clear(&g_tasks[i]);
         g_task_used[i] = false;
+
+        om_task_clear(
+            &g_tasks[i]
+        );
     }
 
     g_current_task = NULL;
@@ -58,83 +147,55 @@ om_task_init(void)
     return OM_SUCCESS;
 }
 
-/*==============================================================================
- * Task Tick
- *============================================================================*/
-
-void
-om_task_tick(void)
-{
-    for (om_size_t i = 0U; i < OM_CONFIG_MAX_TASKS; ++i)
-    {
-        if (!g_task_used[i])
-        {
-            continue;
-        }
-
-        if (g_tasks[i].state == OM_TASK_SLEEPING)
-        {
-            if (g_tasks[i].delay_ticks > 0U)
-            {
-                --g_tasks[i].delay_ticks;
-            }
-
-            if (g_tasks[i].delay_ticks == 0U)
-            {
-                g_tasks[i].state = OM_TASK_READY;
-            }
-        }
-    }
-}
-
-/*==============================================================================
- * Task Creation
- *============================================================================*/
-
+/**
+ * @brief Create a new task.
+ */
 om_error_t
 om_task_create(
     const om_task_config_t *config,
-    om_task_t **handle)
+    om_task_t **task)
 {
-    if ((config == NULL) || (handle == NULL))
+    if ((config == NULL) ||
+        (task == NULL))
     {
         return OM_ERROR_INVALID_ARGUMENT;
     }
 
-    for (om_size_t i = 0U; i < OM_CONFIG_MAX_TASKS; ++i)
+    om_task_t *new_task =
+        om_task_allocate();
+
+    if (new_task == NULL)
     {
-        if (!g_task_used[i])
-        {
-            om_task_t *task = &g_tasks[i];
-
-            om_task_clear(task);
-
-            task->id = (om_task_id_t)(i + 1U);
-            task->name = config->name;
-            task->entry = config->entry;
-            task->argument = config->argument;
-            task->stack = config->stack;
-            task->stack_size = config->stack_size;
-            task->priority = config->priority;
-            task->state = OM_TASK_READY;
-
-            g_task_used[i] = true;
-
-            *handle = task;
-
-            return OM_SUCCESS;
-        }
+        return OM_ERROR_OUT_OF_MEMORY;
     }
 
-    return OM_ERROR_NO_MEMORY;
-}
+    new_task->name = config->name;
+    new_task->entry = config->entry;
+    new_task->argument = config->argument;
+    new_task->stack = config->stack;
+    new_task->stack_size = config->stack_size;
+    new_task->priority = config->priority;
 
+    new_task->state = OM_TASK_READY;
+
+    new_task->delay_ticks = 0U;
+    new_task->runtime_ticks = 0U;
+    new_task->context_switches = 0U;
+    new_task->next = NULL;
+
+    *task = new_task;
+
+    return OM_SUCCESS;
+}
 /*==============================================================================
- * Task Delete
+ * Task Destruction
  *============================================================================*/
 
+/**
+ * @brief Destroy a task.
+ */
 om_error_t
-om_task_delete(
+om_task_destroy(
     om_task_t *task)
 {
     if (task == NULL)
@@ -142,35 +203,99 @@ om_task_delete(
         return OM_ERROR_INVALID_ARGUMENT;
     }
 
-    for (om_size_t i = 0U; i < OM_CONFIG_MAX_TASKS; ++i)
-    {
-        if (&g_tasks[i] == task)
-        {
-            g_task_used[i] = false;
-            om_task_clear(task);
+    om_task_release(task);
 
-            return OM_SUCCESS;
-        }
-    }
-
-    return OM_ERROR_NOT_FOUND;
+    return OM_SUCCESS;
 }
 
 /*==============================================================================
- * Task Delay
+ * Scheduler Interaction
  *============================================================================*/
 
-om_error_t
+/**
+ * @brief Yield execution.
+ *
+ * Cooperative scheduler MVP implementation.
+ */
+void
+om_task_yield(void)
+{
+    if (g_current_task != NULL)
+    {
+        g_current_task->state = OM_TASK_READY;
+    }
+}
+
+/**
+ * @brief Delay the current task.
+ *
+ * For the MVP, a delay is represented as a blocked task with a countdown.
+ * The scheduler/tick subsystem is responsible for decrementing delay_ticks
+ * and restoring the READY state when the delay expires.
+ */
+void
 om_task_delay(
     om_tick_t ticks)
 {
     if (g_current_task == NULL)
     {
-        return OM_ERROR_INVALID_STATE;
+        return;
     }
 
     g_current_task->delay_ticks = ticks;
-    g_current_task->state = OM_TASK_SLEEPING;
+
+    if (ticks > 0U)
+    {
+        g_current_task->state = OM_TASK_BLOCKED;
+    }
+}
+
+/**
+ * @brief Start scheduler execution.
+ */
+om_error_t
+om_task_start_scheduler(void)
+{
+    return om_scheduler_start();
+}
+
+/*==============================================================================
+ * Task State Management
+ *============================================================================*/
+
+/**
+ * @brief Suspend a task.
+ */
+om_error_t
+om_task_suspend(
+    om_task_t *task)
+{
+    if (task == NULL)
+    {
+        return OM_ERROR_INVALID_ARGUMENT;
+    }
+
+    task->state = OM_TASK_SUSPENDED;
+
+    return OM_SUCCESS;
+}
+
+/**
+ * @brief Resume a suspended task.
+ */
+om_error_t
+om_task_resume(
+    om_task_t *task)
+{
+    if (task == NULL)
+    {
+        return OM_ERROR_INVALID_ARGUMENT;
+    }
+
+    if (task->state == OM_TASK_SUSPENDED)
+    {
+        task->state = OM_TASK_READY;
+    }
 
     return OM_SUCCESS;
 }
@@ -179,48 +304,26 @@ om_task_delay(
  * Task Information
  *============================================================================*/
 
+/**
+ * @brief Return the current task.
+ */
 om_task_t *
 om_task_current(void)
 {
     return g_current_task;
 }
 
-
-om_priority_t
-om_task_priority(
+/**
+ * @brief Return the current task state.
+ */
+om_task_state_t
+om_task_state(
     const om_task_t *task)
 {
     if (task == NULL)
     {
-        return 0U;
+        return OM_TASK_TERMINATED;
     }
 
-    return task->priority;
-}
-
-
-om_error_t
-om_task_set_priority(
-    om_task_t *task,
-    om_priority_t priority)
-{
-    if (task == NULL)
-    {
-        return OM_ERROR_INVALID_ARGUMENT;
-    }
-
-    task->priority = priority;
-
-    return OM_SUCCESS;
-}
-
-
-/*==============================================================================
- * Idle Task
- *============================================================================*/
-
-om_task_t *
-om_task_idle(void)
-{
-    return NULL;
+    return task->state;
 }
