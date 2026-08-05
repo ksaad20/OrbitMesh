@@ -1,32 +1,13 @@
-/**
- * @file timer_driver.c
- * @brief OrbitMesh timer driver implementation.
- */
+#include "orbitmesh/drivers/timer_driver.h"
 
 #include "orbitmesh/timer.h"
 
-#include "orbitmesh/error.h"
-
-
-/**
- * @brief Initialize timer driver.
- *
- * @return Operation status.
- */
 om_error_t
 om_timer_driver_init(void)
 {
     return om_timer_init();
 }
 
-
-/**
- * @brief Start timer instance.
- *
- * @param timer Timer instance.
- *
- * @return Operation status.
- */
 om_error_t
 om_timer_driver_start(
     om_timer_t *timer
@@ -37,14 +18,6 @@ om_timer_driver_start(
     );
 }
 
-
-/**
- * @brief Stop timer instance.
- *
- * @param timer Timer instance.
- *
- * @return Operation status.
- */
 om_error_t
 om_timer_driver_stop(
     om_timer_t *timer
@@ -55,14 +28,17 @@ om_timer_driver_stop(
     );
 }
 
-
-/**
- * @brief Get current timer tick value.
- *
- * @return Tick count.
- */
 uint32_t
 om_timer_driver_get_ticks(void)
 {
-    return om_timer_tick();
+#ifdef OM_TIMER_HAS_GET_TICKS
+    return om_timer_get_ticks();
+#else
+    /*
+     * The current HAL does not expose a function that returns the
+     * system tick count. This should be replaced once such an API
+     * is available.
+     */
+    return 0U;
+#endif
 }
