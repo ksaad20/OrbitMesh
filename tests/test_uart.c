@@ -25,8 +25,33 @@ test_uart_initialization(void)
 
 
     result =
-        om_uart_init(
-            0U
+        om_uart_init();
+
+
+    assert(
+        result == OM_SUCCESS
+    );
+}
+
+
+static void
+test_uart_configuration(void)
+{
+    om_uart_config_t config =
+    {
+        .id = 0U,
+        .baud_rate = 115200U,
+        .data_bits = 8U,
+        .parity = OM_UART_PARITY_NONE,
+        .stop_bits = OM_UART_STOP_BITS_1
+    };
+
+    om_error_t result;
+
+
+    result =
+        om_uart_configure(
+            &config
         );
 
 
@@ -41,7 +66,6 @@ test_uart_write(void)
 {
     uint8_t data =
         'A';
-
 
     om_error_t result;
 
@@ -61,19 +85,18 @@ test_uart_write(void)
 
 
 static void
-test_uart_read(void)
+test_uart_read_byte(void)
 {
-    uint8_t data;
-
+    uint8_t data =
+        0U;
 
     om_error_t result;
 
 
     result =
-        om_uart_read(
+        om_uart_read_byte(
             0U,
-            &data,
-            1U
+            &data
         );
 
 
@@ -93,9 +116,11 @@ main(void)
 {
     test_uart_initialization();
 
+    test_uart_configuration();
+
     test_uart_write();
 
-    test_uart_read();
+    test_uart_read_byte();
 
 
     return 0;
