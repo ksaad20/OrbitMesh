@@ -104,6 +104,22 @@ typedef uint32_t om_driver_id_t;
 typedef uint32_t om_device_id_t;
 
 /*==============================================================================
+ * GPIO Types
+ *============================================================================*/
+
+/**
+ * @brief GPIO pin identifier.
+ *
+ * The interpretation of the value is platform-specific.
+ */
+typedef uint32_t om_pin_t;
+
+/**
+ * @brief GPIO port identifier.
+ */
+typedef uint32_t om_port_t;
+
+/*==============================================================================
  * Priority Types
  *============================================================================*/
 
