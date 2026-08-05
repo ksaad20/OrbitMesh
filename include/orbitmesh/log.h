@@ -2,7 +2,8 @@
  * @file log.h
  * @brief OrbitMesh logging service interface.
  *
- * Provides a lightweight logging API for OrbitMesh services.
+ * Provides a lightweight logging API for the
+ * OrbitMesh kernel, drivers, and services.
  *
  * @author OrbitMesh Contributors
  * @copyright Apache License 2.0
@@ -12,17 +13,10 @@
 #define ORBITMESH_LOG_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
-/*==============================================================================
- * Dependencies
- *============================================================================*/
-
 #include "orbitmesh/error.h"
-
-#include <stdbool.h>
 
 /*==============================================================================
  * Public API
@@ -31,40 +25,49 @@ extern "C"
 /**
  * @brief Initialize the logging service.
  *
- * @return OM_SUCCESS on success.
+ * @return OrbitMesh error code.
  */
 om_error_t
 om_logger_init(void);
 
-
 /**
- * @brief Log an informational message.
+ * @brief Write an informational log message.
  *
- * @param message Null-terminated message string.
+ * Uses printf-style formatting.
+ *
+ * @param format Format string.
+ * @param ... Format arguments.
  */
 void
 om_log_info(
-    const char *message);
-
+    const char *format,
+    ...);
 
 /**
- * @brief Log a warning message.
+ * @brief Write a warning log message.
  *
- * @param message Null-terminated message string.
+ * Uses printf-style formatting.
+ *
+ * @param format Format string.
+ * @param ... Format arguments.
  */
 void
 om_log_warning(
-    const char *message);
-
+    const char *format,
+    ...);
 
 /**
- * @brief Log an error message.
+ * @brief Write an error log message.
  *
- * @param message Null-terminated message string.
+ * Uses printf-style formatting.
+ *
+ * @param format Format string.
+ * @param ... Format arguments.
  */
 void
 om_log_error(
-    const char *message);
+    const char *format,
+    ...);
 
 #ifdef __cplusplus
 }
