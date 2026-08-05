@@ -48,7 +48,7 @@ typedef int32_t om_error_t;
 #define OM_ERROR_BUSY                  ((om_error_t)8)
 #define OM_ERROR_ALREADY_EXISTS        ((om_error_t)9)
 #define OM_ERROR_NOT_FOUND             ((om_error_t)10)
-#define OM_ERROR_NOT_FOUND             ((om_error_t)11)
+#define OM_ERROR_NOT_AVAILABLE         ((om_error_t)11)
 #define OM_ERROR_PERMISSION_DENIED     ((om_error_t)12)
 #define OM_ERROR_OUT_OF_MEMORY         ((om_error_t)13)
 #define OM_ERROR_OVERFLOW              ((om_error_t)14)
