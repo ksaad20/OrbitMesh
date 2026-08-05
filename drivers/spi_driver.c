@@ -1,4 +1,4 @@
-/**
+ /**
  * @file spi_driver.c
  * @brief OrbitMesh SPI driver.
  *
@@ -9,8 +9,12 @@
  * @copyright Apache License 2.0
  */
 
-#include "orbitmesh/spi.h"
+#include <stddef.h>
+#include <stdint.h>
+
+#include "orbitmesh/drivers/spi_driver.h"
 #include "orbitmesh/error.h"
+#include "orbitmesh/spi.h"
 
 
 /*==============================================================================
@@ -20,17 +24,14 @@
 /**
  * @brief Initialize SPI driver.
  *
- * @param spi SPI peripheral identifier.
+ * Initializes the SPI subsystem through the OrbitMesh HAL.
  *
  * @return OrbitMesh error code.
  */
 om_error_t
-om_spi_driver_init(
-    om_spi_id_t spi)
+om_spi_driver_init(void)
 {
-    return om_spi_init(
-        spi
-    );
+    return om_spi_init();
 }
 
 
@@ -39,16 +40,14 @@ om_spi_driver_init(
  *
  * Performs full duplex SPI communication.
  *
- * @param spi SPI peripheral identifier.
  * @param tx Transmit buffer.
  * @param rx Receive buffer.
- * @param length Number of bytes.
+ * @param length Number of bytes to transfer.
  *
  * @return OrbitMesh error code.
  */
 om_error_t
 om_spi_driver_transfer(
-    om_spi_id_t spi,
     const uint8_t *tx,
     uint8_t *rx,
     size_t length)
@@ -58,9 +57,12 @@ om_spi_driver_transfer(
         return OM_ERROR_NULL_POINTER;
     }
 
+    if (length == 0U)
+    {
+        return OM_ERROR_INVALID_ARGUMENT;
+    }
 
     return om_spi_transfer(
-        spi,
         tx,
         rx,
         length
