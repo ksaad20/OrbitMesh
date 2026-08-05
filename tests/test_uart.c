@@ -1,122 +1,54 @@
-/**
- * @file test_uart.c
- * @brief OrbitMesh UART unit tests.
- *
- * Validates UART communication functionality.
- *
- * @author OrbitMesh Contributors
- * @copyright Apache License 2.0
- */
+#include <assert.h>
+#include <stdio.h>
 
 #include "orbitmesh/uart.h"
-#include "orbitmesh/error.h"
-
-#include <assert.h>
 
 
-/*==============================================================================
- * Tests
- *============================================================================*/
+void run_test_uart(void);
+
 
 static void
 test_uart_initialization(void)
 {
-    om_error_t result;
+    const int result = om_uart_init();
 
-
-    result =
-        om_uart_init();
-
-
-    assert(
-        result == OM_SUCCESS
-    );
-}
-
-
-static void
-test_uart_configuration(void)
-{
-    om_uart_config_t config =
-    {
-        .id = 0U,
-        .baud_rate = 115200U,
-        .data_bits = 8U,
-        .parity = OM_UART_PARITY_NONE,
-        .stop_bits = OM_UART_STOP_BITS_1
-    };
-
-    om_error_t result;
-
-
-    result =
-        om_uart_configure(
-            &config
-        );
-
-
-    assert(
-        result == OM_SUCCESS
-    );
+    assert(result == 0);
 }
 
 
 static void
 test_uart_write(void)
 {
-    uint8_t data =
-        'A';
+    const char message[] = "OrbitMesh";
 
-    om_error_t result;
-
-
-    result =
-        om_uart_write(
-            0U,
-            &data,
-            1U
-        );
-
-
-    assert(
-        result == OM_SUCCESS
+    const int result = om_uart_write(
+        (const uint8_t *)message,
+        sizeof(message) - 1U
     );
+
+    assert(result == 0);
 }
 
 
 static void
 test_uart_read_byte(void)
 {
-    uint8_t data =
-        0U;
+    uint8_t byte = 0U;
 
-    om_error_t result;
-
-
-    result =
-        om_uart_read_byte(
-            0U,
-            &data
-        );
-
-
-    assert(
-        result == OM_SUCCESS ||
-        result == OM_ERROR_TIMEOUT
+    const int result = om_uart_read(
+        &byte
     );
+
+    assert(result == 0);
 }
 
-
-/*==============================================================================
- * Test Entry
- *============================================================================*/
 
 void
 run_test_uart(void)
 {
-    test_uart_configuration();
-
+    test_uart_initialization();
     test_uart_write();
+    test_uart_read_byte();
 
-    test_uart_read();
+    printf("UART tests passed\n");
 }
