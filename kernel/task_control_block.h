@@ -1,16 +1,8 @@
 /**
  * @file task_control_block.h
- * @brief Internal Task Control Block (TCB) definition.
+ * @brief Internal Task Control Block definition.
  *
- * Defines the private task representation used by the OrbitMesh kernel.
- *
- * This header is NOT part of the public API.
- *
- * Applications must use:
- *
- *     #include <orbitmesh/task.h>
- *
- * instead of this header.
+ * Single internal representation of an OrbitMesh task.
  *
  * @author OrbitMesh Contributors
  * @copyright Apache License 2.0
@@ -28,92 +20,68 @@ extern "C"
 
 /**
  * @brief Internal Task Control Block.
- *
- * Exactly one instance exists for every allocated task.
  */
 struct om_task
 {
-    /*==========================================================================
-     * Identity
-     *==========================================================================*/
-
     /**
-     * Unique task identifier.
+     * Task identifier.
      */
     om_task_id_t id;
 
     /**
-     * Human-readable task name.
+     * Task name.
      */
     const char *name;
 
-    /*==========================================================================
-     * Execution
-     *==========================================================================*/
-
     /**
-     * Task entry function.
+     * Entry callback.
      */
-    om_task_function_t entry;
+    om_task_entry_t entry;
 
     /**
-     * User-supplied argument.
+     * User argument.
      */
     void *argument;
 
-    /*==========================================================================
-     * Stack
-     *==========================================================================*/
-
     /**
-     * Lowest stack address.
+     * Task stack memory.
      */
-    void *stack_base;
+    void *stack;
 
     /**
-     * Current stack pointer.
-     *
-     * Reserved for future context switching support.
-     */
-    void *stack_pointer;
-
-    /**
-     * Stack size in bytes.
+     * Stack size.
      */
     om_size_t stack_size;
 
-    /*==========================================================================
-     * Scheduling
-     *==========================================================================*/
-
     /**
-     * Task priority.
+     * Scheduling priority.
      */
     om_priority_t priority;
 
     /**
-     * Current task state.
+     * Current state.
      */
     om_task_state_t state;
 
     /**
-     * Tick at which the task becomes runnable.
+     * Remaining delay ticks.
      */
-    om_tick_t wake_tick;
-
-    /*==========================================================================
-     * Runtime Statistics
-     *==========================================================================*/
+    om_tick_t delay_ticks;
 
     /**
-     * Total scheduler ticks executed.
+     * Runtime ticks.
      */
     om_tick_t runtime_ticks;
 
     /**
-     * Number of times scheduled.
+     * Number of executions.
      */
     om_tick_t context_switches;
+
+    /**
+     * Next task.
+     */
+    struct om_task *next;
 };
 
 #ifdef __cplusplus
