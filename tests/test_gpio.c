@@ -1,104 +1,55 @@
-/**
- * @file test_gpio.c
- * @brief OrbitMesh GPIO unit tests.
- *
- * Validates GPIO driver functionality.
- *
- * @author OrbitMesh Contributors
- * @copyright Apache License 2.0
- */
+#include <assert.h>
+#include <stdio.h>
 
 #include "orbitmesh/gpio.h"
-#include "orbitmesh/error.h"
 
-#include <assert.h>
-
-
-/*==============================================================================
- * Tests
- *============================================================================*/
 
 static void
-test_gpio_configuration(void)
+test_gpio_initialization(void)
 {
-    om_gpio_config_t config =
-    {
+    om_gpio_config_t config = {
         .pin = 1U,
         .mode = OM_GPIO_OUTPUT,
-        .pull = OM_GPIO_PULL_NONE
     };
 
-    om_error_t result;
+    const int result = om_gpio_init(&config);
 
-
-    result =
-        om_gpio_configure(
-            &config
-        );
-
-
-    assert(
-        result == OM_SUCCESS
-    );
+    assert(result == 0);
 }
 
 
 static void
 test_gpio_write(void)
 {
-    om_error_t result;
-
-
-    result =
-        om_gpio_write(
-            1U,
-            OM_GPIO_HIGH
-        );
-
-
-    assert(
-        result == OM_SUCCESS
+    const int result = om_gpio_write(
+        1U,
+        true
     );
+
+    assert(result == 0);
 }
 
 
 static void
 test_gpio_read(void)
 {
-    om_gpio_level_t level;
+    bool state = false;
 
-    om_error_t result;
-
-
-    result =
-        om_gpio_read(
-            1U,
-            &level
-        );
-
-
-    assert(
-        result == OM_SUCCESS
+    const int result = om_gpio_read(
+        1U,
+        &state
     );
 
-
-    assert(
-        level == OM_GPIO_HIGH ||
-        level == OM_GPIO_LOW
-    );
+    assert(result == 0);
 }
 
-
-/*==============================================================================
- * Test Entry
- *============================================================================*/
 
 void
 run_test_gpio(void)
 {
-    test_gpio_configuration();
-
+    test_gpio_initialization();
     test_gpio_write();
-
     test_gpio_read();
+
+    printf("GPIO tests passed\n");
 }
