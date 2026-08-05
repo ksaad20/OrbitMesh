@@ -254,7 +254,7 @@ om_task_delay(
 om_error_t
 om_task_start_scheduler(void)
 {
-    return om_scheduler_start();
+    return OM_SUCCESS;
 }
 
 /*==============================================================================
