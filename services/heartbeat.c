@@ -1,80 +1,57 @@
 /**
  * @file heartbeat.c
- * @brief OrbitMesh heartbeat service.
+ * @brief OrbitMesh heartbeat service implementation.
  *
- * Provides periodic system heartbeat generation
- * for health monitoring and diagnostics.
- *
- * @author OrbitMesh Contributors
- * @copyright Apache License 2.0
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 #include "orbitmesh/heartbeat.h"
-#include "orbitmesh/error.h"
-#include "orbitmesh/log.h"
 
 
-/*==============================================================================
- * Private State
- *============================================================================*/
+static om_tick_t heartbeat_counter = 0U;
 
-static om_bool_t g_heartbeat_active = false;
-
-static uint32_t g_heartbeat_count = 0U;
-
-
-/*==============================================================================
- * Public API
- *============================================================================*/
 
 /**
  * @brief Initialize heartbeat service.
- *
- * @return OrbitMesh error code.
  */
 om_error_t
 om_heartbeat_init(void)
 {
-    g_heartbeat_active = true;
-
-    g_heartbeat_count = 0U;
-
+    heartbeat_counter = 0U;
 
     return OM_SUCCESS;
 }
 
 
 /**
- * @brief Execute heartbeat update.
- *
- * Called periodically by the scheduler.
+ * @brief Generate heartbeat.
  */
-void
-om_heartbeat_update(void)
+om_error_t
+om_heartbeat_signal(void)
 {
-    if (!g_heartbeat_active)
-    {
-        return;
-    }
+    heartbeat_counter++;
 
-
-    g_heartbeat_count++;
-
-
-    om_log_info(
-        "Heartbeat %lu",
-        (unsigned long)g_heartbeat_count
-    );
+    return OM_SUCCESS;
 }
 
 
 /**
- * @brief Get heartbeat counter.
- *
- * @return Number of heartbeat events.
+ * @brief Return heartbeat count.
  */
-uint32_t
+om_tick_t
 om_heartbeat_count(void)
 {
-    return g_heartbeat_count;
+    return heartbeat_counter;
+}
+
+
+/**
+ * @brief Reset heartbeat counter.
+ */
+om_error_t
+om_heartbeat_reset(void)
+{
+    heartbeat_counter = 0U;
+
+    return OM_SUCCESS;
 }
