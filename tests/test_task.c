@@ -73,25 +73,12 @@ test_task_delay(void)
 /**
  * @brief Run task tests.
  */
-int
-main(void)
+void
+run_test_task(void)
 {
-    om_error_t result;
+    test_task_configuration();
 
-    result =
-        om_task_init();
+    test_task_write();
 
-    assert(
-        result == OM_SUCCESS
-    );
-
-    test_task_creation();
-
-    test_task_delay();
-
-    printf(
-        "Task tests passed\n"
-    );
-
-    return 0;
+    test_task_read();
 }
