@@ -9,6 +9,10 @@
 
 
 add_subdirectory(
+    basic_satellite
+)
+
+add_subdirectory(
     blinky
 )
 
