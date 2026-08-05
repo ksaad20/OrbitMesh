@@ -10,6 +10,7 @@
  */
 
 #include "orbitmesh/drivers/watchdog_driver.h"
+#include "orbitmesh/watchdog.h"
 
 /*==============================================================================
  * Public API
