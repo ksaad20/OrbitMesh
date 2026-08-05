@@ -2,16 +2,17 @@
  * @file gpio_driver.c
  * @brief OrbitMesh GPIO driver.
  *
- * Provides a generic GPIO driver interface built
- * on top of the hardware abstraction layer.
+ * Provides a generic GPIO interface built on top
+ * of the OrbitMesh HAL layer.
  *
  * @author OrbitMesh Contributors
  * @copyright Apache License 2.0
  */
 
-#include "orbitmesh/gpio.h"
+#include "orbitmesh/drivers/gpio_driver.h"
+
 #include "orbitmesh/error.h"
-#include "orbitmesh/types.h"
+#include "orbitmesh/gpio.h"
 
 
 /*==============================================================================
@@ -26,15 +27,15 @@
 om_error_t
 om_gpio_driver_init(void)
 {
-    return OM_SUCCESS;
+    return OM_ERROR_OK;
 }
 
 
 /**
- * @brief Configure a GPIO pin.
+ * @brief Configure GPIO pin.
  *
- * @param pin GPIO identifier.
- * @param mode Pin direction.
+ * @param pin GPIO pin identifier.
+ * @param mode GPIO operating mode.
  *
  * @return OrbitMesh error code.
  */
@@ -43,10 +44,14 @@ om_gpio_driver_configure(
     om_pin_t pin,
     om_gpio_mode_t mode)
 {
+    om_gpio_config_t config = {
+        .pin = pin,
+        .mode = mode,
+        .pull = OM_GPIO_PULL_NONE
+    };
+
     return om_gpio_configure(
-        pin,
-        mode,
-        OM_GPIO_NO_PULL
+        &config
     );
 }
 
@@ -54,8 +59,8 @@ om_gpio_driver_configure(
 /**
  * @brief Write GPIO output level.
  *
- * @param pin GPIO identifier.
- * @param level Output level.
+ * @param pin GPIO pin identifier.
+ * @param level GPIO output level.
  *
  * @return OrbitMesh error code.
  */
@@ -74,15 +79,23 @@ om_gpio_driver_write(
 /**
  * @brief Read GPIO input level.
  *
- * @param pin GPIO identifier.
+ * @param pin GPIO pin identifier.
+ * @param level Pointer to store GPIO level.
  *
- * @return GPIO level.
+ * @return OrbitMesh error code.
  */
-om_gpio_level_t
+om_error_t
 om_gpio_driver_read(
-    om_pin_t pin)
+    om_pin_t pin,
+    om_gpio_level_t *level)
 {
+    if (level == NULL)
+    {
+        return OM_ERROR_NULL_POINTER;
+    }
+
     return om_gpio_read(
-        pin
+        pin,
+        level
     );
 }
