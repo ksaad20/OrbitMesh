@@ -1,54 +1,39 @@
 /**
  * @file test_scheduler.c
- * @brief OrbitMesh scheduler tests.
+ * @brief OrbitMesh scheduler unit tests.
+ *
+ * Validates scheduler initialization and execution behavior.
  *
  * SPDX-License-Identifier: Apache-2.0
  */
 
 #include <assert.h>
+#include <stdio.h>
 
-#include "orbitmesh/kernel.h"
-#include "orbitmesh/task.h"
+#include "orbitmesh/scheduler.h"
 
 
-/**
- * @brief Public test entry point.
- */
+/*==============================================================================
+ * Test Prototypes
+ *============================================================================*/
+
 void
 run_test_scheduler(void);
 
 
-/**
- * @brief Verify scheduler initialization state.
- */
+/*==============================================================================
+ * Tests
+ *============================================================================*/
+
 static void
 test_scheduler_initialization(void)
 {
     om_error_t result;
 
-    result =
-        om_kernel_init();
-
-    assert(
-        result == OM_SUCCESS
-    );
-
-    assert(
-        om_kernel_is_initialized()
-    );
-}
-
-
-/**
- * @brief Verify task subsystem initialization.
- */
-static void
-test_scheduler_task_system(void)
-{
-    om_error_t result;
 
     result =
-        om_task_init();
+        om_scheduler_init();
+
 
     assert(
         result == OM_SUCCESS
@@ -56,27 +41,35 @@ test_scheduler_task_system(void)
 }
 
 
-/**
- * @brief Execute scheduler tests.
- */
 static void
 test_scheduler(void)
 {
-    test_scheduler_initialization();
+    om_error_t result;
 
-    test_scheduler_task_system();
+
+    result =
+        om_scheduler_run_once();
+
+
+    assert(
+        result == OM_SUCCESS
+    );
 }
 
 
-/**
- * @brief Run scheduler test suite.
- */
+/*==============================================================================
+ * Test Entry
+ *============================================================================*/
+
 void
 run_test_scheduler(void)
 {
-    test_scheduler_configuration();
+    test_scheduler_initialization();
 
-    test_scheduler_write();
+    test_scheduler();
 
-    test_scheduler_read();
+
+    printf(
+        "Scheduler tests passed\n"
+    );
 }
