@@ -40,16 +40,27 @@ om_log_write(
     const char *format,
     va_list args)
 {
-    printf(
-        "%s",
-        prefix);
+    (void)fputs(
+        prefix,
+        stdout);
 
-    vprintf(
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
+#endif
+
+    (void)vfprintf(
+        stdout,
         format,
         args);
 
-    printf(
-        "\n");
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+
+    (void)fputc(
+        '\n',
+        stdout);
 }
 
 /*==============================================================================
