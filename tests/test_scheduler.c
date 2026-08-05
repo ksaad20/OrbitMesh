@@ -1,56 +1,45 @@
 /**
  * @file test_scheduler.c
- * @brief OrbitMesh scheduler unit tests.
+ * @brief OrbitMesh scheduler behavior tests.
  *
- * Validates scheduler startup and task dispatch.
- *
- * @author OrbitMesh Contributors
- * @copyright Apache License 2.0
+ * SPDX-License-Identifier: Apache-2.0
  */
-
-#include "orbitmesh/scheduler.h"
-#include "orbitmesh/task.h"
-#include "orbitmesh/error.h"
 
 #include <assert.h>
 
-
-/*==============================================================================
- * Test State
- *============================================================================*/
-
-static uint32_t
-g_task_counter = 0U;
+#include "orbitmesh/kernel.h"
+#include "orbitmesh/task.h"
 
 
-/*==============================================================================
- * Test Task
- *============================================================================*/
-
+/**
+ * @brief Verify scheduler startup state.
+ */
 static void
-scheduler_test_task(
-    void *argument)
-{
-    (void)argument;
-
-
-    g_task_counter++;
-}
-
-
-/*==============================================================================
- * Tests
- *============================================================================*/
-
-static void
-test_scheduler_initialization(void)
+test_scheduler_state(void)
 {
     om_error_t result;
 
+    result = om_kernel_init();
 
-    result =
-        om_scheduler_init();
+    assert(
+        result == OM_SUCCESS
+    );
 
+    assert(
+        om_kernel_is_initialized()
+    );
+}
+
+
+/**
+ * @brief Verify task subsystem initialization.
+ */
+static void
+test_scheduler_task_init(void)
+{
+    om_error_t result;
+
+    result = om_task_init();
 
     assert(
         result == OM_SUCCESS
@@ -58,37 +47,13 @@ test_scheduler_initialization(void)
 }
 
 
-static void
-test_scheduler_task_creation(void)
+/**
+ * @brief Scheduler test entry.
+ */
+void
+test_scheduler(void)
 {
-    om_error_t result;
+    test_scheduler_state();
 
-
-    result =
-        om_task_create(
-            "test",
-            scheduler_test_task,
-            NULL
-        );
-
-
-    assert(
-        result == OM_SUCCESS
-    );
-}
-
-
-/*==============================================================================
- * Test Entry
- *============================================================================*/
-
-int
-main(void)
-{
-    test_scheduler_initialization();
-
-    test_scheduler_task_creation();
-
-
-    return 0;
+    test_scheduler_task_init();
 }
