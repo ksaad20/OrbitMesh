@@ -66,13 +66,12 @@ test_heartbeat_update(void)
  * Test Entry
  *============================================================================*/
 
-int
-main(void)
+void
+run_test_heartbeat(void)
 {
-    test_heartbeat_initialization();
+    test_heartbeat_configuration();
 
-    test_heartbeat_update();
+    test_heartbeat_write();
 
-
-    return 0;
+    test_heartbeat_read();
 }
