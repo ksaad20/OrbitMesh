@@ -1,0 +1,68 @@
+name: OrbitMesh CI
+
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+
+
+jobs:
+
+  build-and-test:
+
+    name: Build and Test
+
+    runs-on: ubuntu-latest
+
+
+    strategy:
+      matrix:
+        compiler:
+          - gcc
+          - clang
+
+
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            cmake \
+            ninja-build \
+            ${{ matrix.compiler }}
+
+
+
+      - name: Configure build
+        run: |
+          cmake \
+            -B build \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_C_COMPILER=${{ matrix.compiler }}
+
+
+
+      - name: Build OrbitMesh
+        run: |
+          cmake --build build
+
+
+
+      - name: Run tests
+        run: |
+          cd build
+          ctest --output-on-failure
