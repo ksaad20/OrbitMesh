@@ -1,24 +1,35 @@
-/**
- * @file test_hal.c
- * @brief OrbitMesh HAL unit tests.
- *
- * Validates HAL initialization.
- *
- * @copyright Apache License 2.0
- */
+#include <assert.h>
+#include <stdio.h>
 
 #include "orbitmesh/hal.h"
-#include "orbitmesh/error.h"
 
-#include <assert.h>
+
+void run_test_hal(void);
+
+
+static void
+test_hal_initialization(void)
+{
+    const int result = om_hal_init();
+
+    assert(result == 0);
+}
+
+
+static void
+test_hal_status(void)
+{
+    const bool initialized = om_hal_is_initialized();
+
+    assert(initialized == true);
+}
 
 
 void
 run_test_hal(void)
 {
-    test_hal_configuration();
+    test_hal_initialization();
+    test_hal_status();
 
-    test_hal_write();
-
-    test_hal_read();
+    printf("HAL tests passed\n");
 }
