@@ -12,8 +12,11 @@
 
 
 static void
-timer_callback(void)
+timer_callback(
+    void *argument
+)
 {
+    (void)argument;
 }
 
 
@@ -45,7 +48,9 @@ test_timer_start(void)
         om_timer_create(
             &timer,
             1000U,
-            timer_callback
+            false,
+            timer_callback,
+            NULL
         );
 
 
