@@ -74,18 +74,12 @@ test_kernel_uptime(void)
 /**
  * @brief Run kernel tests.
  */
-int
-main(void)
+void
+run_test_kernel(void)
 {
-    test_kernel_initialization();
+    test_kernel_configuration();
 
-    test_kernel_state();
+    test_kernel_write();
 
-    test_kernel_uptime();
-
-    printf(
-        "Kernel tests passed\n"
-    );
-
-    return 0;
+    test_kernel_read();
 }
