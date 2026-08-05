@@ -9,6 +9,10 @@
 #include "kernel_internal.h"
 #include "orbitmesh/task.h"
 
+extern om_task_t g_tasks[OM_CONFIG_MAX_TASKS];
+extern bool g_task_used[OM_CONFIG_MAX_TASKS];
+extern om_task_t *g_current_task;
+
 #ifdef __cplusplus
 extern "C"
 {
