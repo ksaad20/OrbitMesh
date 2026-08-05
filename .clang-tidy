@@ -1,0 +1,104 @@
+# -----------------------------------------------------------------------------
+# OrbitMesh Clang-Tidy Configuration
+#
+# Static analysis configuration for the OrbitMesh operating system.
+# Language: C17
+# -----------------------------------------------------------------------------
+
+Checks: >
+  -*,
+  bugprone-*,
+  cert-*,
+  clang-analyzer-*,
+  cppcoreguidelines-*,
+  misc-*,
+  performance-*,
+  portability-*,
+  readability-*,
+
+WarningsAsErrors: "*"
+
+HeaderFilterRegex: "^(include|kernel|hal|drivers|services|platform)/"
+
+AnalyzeTemporaryDtors: false
+
+FormatStyle: file
+
+CheckOptions:
+
+  # ---------------------------------------------------------------------------
+  # Naming
+  # ---------------------------------------------------------------------------
+
+  - key: readability-identifier-naming.NamespaceCase
+    value: lower_case
+
+  - key: readability-identifier-naming.FunctionCase
+    value: lower_case
+
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+
+  - key: readability-identifier-naming.ParameterCase
+    value: lower_case
+
+  - key: readability-identifier-naming.MemberCase
+    value: lower_case
+
+  - key: readability-identifier-naming.GlobalConstantCase
+    value: UPPER_CASE
+
+  - key: readability-identifier-naming.ConstantCase
+    value: UPPER_CASE
+
+  - key: readability-identifier-naming.EnumConstantCase
+    value: UPPER_CASE
+
+  - key: readability-identifier-naming.MacroDefinitionCase
+    value: UPPER_CASE
+
+  - key: readability-identifier-naming.StructCase
+    value: CamelCase
+
+  - key: readability-identifier-naming.EnumCase
+    value: CamelCase
+
+  - key: readability-identifier-naming.TypedefCase
+    value: CamelCase
+
+  # ---------------------------------------------------------------------------
+  # Readability
+  # ---------------------------------------------------------------------------
+
+  - key: readability-function-size.LineThreshold
+    value: "200"
+
+  - key: readability-function-size.StatementThreshold
+    value: "100"
+
+  - key: readability-function-size.BranchThreshold
+    value: "20"
+
+  - key: readability-function-size.ParameterThreshold
+    value: "6"
+
+  # ---------------------------------------------------------------------------
+  # Complexity
+  # ---------------------------------------------------------------------------
+
+  - key: readability-function-cognitive-complexity.Threshold
+    value: "20"
+
+  # ---------------------------------------------------------------------------
+  # Include ordering
+  # ---------------------------------------------------------------------------
+
+  - key: llvm-include-order.StrictMode
+    value: "true"
+
+  # ---------------------------------------------------------------------------
+  # Documentation
+  # ---------------------------------------------------------------------------
+
+  - key: readability-function-size.CountMemberInitAsStmt
+    value: "false"
