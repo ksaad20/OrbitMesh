@@ -236,3 +236,50 @@ om_kernel_uptime(void)
 {
     return g_kernel.uptime_ticks;
 }
+/**
+ * @file tick.c
+ * @brief OrbitMesh system tick implementation.
+ *
+ * Implements the kernel system tick.
+ *
+ * Responsibilities:
+ *  - Advance kernel uptime
+ *  - Update delayed tasks
+ *  - Drive software timers
+ *  - Notify the scheduler
+ *
+ * @author OrbitMesh Contributors
+ * @copyright Apache License 2.0
+ */
+
+#include "kernel_internal.h"
+
+#include "scheduler.h"
+
+/*==============================================================================
+ * Public API
+ *============================================================================*/
+
+/**
+ * @brief Process one system tick.
+ *
+ * This function is intended to be called by the platform timer interrupt
+ * handler at a fixed frequency (for example, 1000 Hz).
+ */
+void
+om_kernel_tick(void)
+{
+    /*
+     * Advance the kernel clock.
+     */
+    ++g_kernel.uptime_ticks;
+
+    /*
+     * Update scheduler timing.
+     */
+    om_scheduler_tick();
+
+    /*
+     * Software timers will be processed here in a future implementation.
+     */
+}
