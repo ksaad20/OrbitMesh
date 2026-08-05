@@ -179,8 +179,6 @@ om_task_create(
     new_task->state = OM_TASK_READY;
 
     new_task->delay_ticks = 0U;
-    new_task->runtime_ticks = 0U;
-    new_task->context_switches = 0U;
     new_task->next = NULL;
 
     *task = new_task;
