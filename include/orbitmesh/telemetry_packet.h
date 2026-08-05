@@ -1,3 +1,7 @@
+#include <stdint.h>
+
+#include "orbitmesh/health_monitor.h"
+
 /**
  * @file telemetry_packet.h
  * @brief OrbitMesh telemetry packet definitions.
