@@ -22,7 +22,7 @@ run_test_task(void);
 
 
 /*==============================================================================
- * Test Helpers
+ * Test Callback
  *============================================================================*/
 
 static void
@@ -43,12 +43,17 @@ test_task_creation(void)
 {
     om_task_t *task = NULL;
 
+    om_task_config_t config =
+    {
+        .name = "test_task",
+        .entry = dummy_task,
+        .argument = NULL,
+    };
 
-    om_error_t result;
 
-
-    result =
+    om_error_t result =
         om_task_create(
+            &config,
             &task
         );
 
