@@ -104,6 +104,30 @@ typedef uint32_t om_spi_id_t;
 typedef uint32_t om_uart_id_t;
 
 /**
+ * @brief I2C controller identifier.
+ */
+typedef uint32_t om_i2c_id_t;
+
+/**
+ * @brief CAN controller identifier.
+ */
+typedef uint32_t om_can_id_t;
+
+/**
+ * @brief ADC identifier.
+ */
+typedef uint32_t om_adc_id_t;
+
+/**
+ * @brief DAC identifier.
+ */
+typedef uint32_t om_dac_id_t;
+
+/**
+ * @brief PWM identifier.
+ */
+typedef uint32_t om_pwm_id_t;
+/**
  * @brief Driver identifier.
  */
 typedef uint32_t om_driver_id_t;
