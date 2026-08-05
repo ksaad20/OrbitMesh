@@ -68,13 +68,12 @@ test_spi_transfer(void)
  * Test Entry
  *============================================================================*/
 
-int
-main(void)
+void
+run_test_spi(void)
 {
-    test_spi_initialization();
+    test_spi_configuration();
 
-    test_spi_transfer();
+    test_spi_write();
 
-
-    return 0;
+    test_spi_read();
 }
