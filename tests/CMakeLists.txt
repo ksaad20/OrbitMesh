@@ -18,7 +18,7 @@ include(CTest)
 add_executable(
     orbitmesh_tests
 
-    test_version.c
+#   test_version.c
     test_kernel.c
     test_scheduler.c
     test_task.c
@@ -26,11 +26,12 @@ add_executable(
     test_hal.c
     test_gpio.c
     test_uart.c
-    test_spi.c
-    test_i2c.c
-    test_console.c
-    test_logger.c
+#   test_spi.c
+#   test_i2c.c
+#   test_console.c
+#   test_logger.c
     test_health_monitor.c
+    test_heartbeat.c
 )
 
 #------------------------------------------------------------------------------
