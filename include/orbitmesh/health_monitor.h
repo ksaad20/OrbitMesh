@@ -1,12 +1,6 @@
 /**
  * @file health_monitor.h
  * @brief OrbitMesh health monitoring service interface.
- *
- * Provides a lightweight health monitoring interface for
- * OrbitMesh services and system diagnostics.
- *
- * @author OrbitMesh Contributors
- * @copyright Apache License 2.0
  */
 
 #ifndef ORBITMESH_HEALTH_MONITOR_H
@@ -16,6 +10,8 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
+
 #include "orbitmesh/error.h"
 
 /*==============================================================================
@@ -23,21 +19,21 @@ extern "C" {
  *============================================================================*/
 
 /**
- * @brief Health monitor status.
+ * @brief Overall system health state.
  */
 typedef enum
 {
-    OM_HEALTH_STATUS_OK = 0,
-    OM_HEALTH_STATUS_WARNING,
-    OM_HEALTH_STATUS_FAULT
-} om_health_status_t;
+    OM_HEALTH_OK = 0,
+    OM_HEALTH_WARNING,
+    OM_HEALTH_FAULT
+} om_health_state_t;
 
 /*==============================================================================
  * Public API
  *============================================================================*/
 
 /**
- * @brief Initialize the health monitoring service.
+ * @brief Initialize the health monitor.
  *
  * @return OrbitMesh error code.
  */
@@ -45,23 +41,30 @@ om_error_t
 om_health_monitor_init(void);
 
 /**
- * @brief Report a health fault.
+ * @brief Report a system fault.
  *
- * @param module Name of the reporting module.
- * @param error OrbitMesh error code.
+ * The parameter list must exactly match the implementation in
+ * health_monitor.c.
  */
 void
 om_health_monitor_fault(
-    const char *module,
     om_error_t error);
 
 /**
- * @brief Get the current health status.
+ * @brief Get the current health state.
  *
- * @return Current health status.
+ * @return Current health state.
  */
-om_health_status_t
-om_health_monitor_status(void);
+om_health_state_t
+om_health_monitor_state(void);
+
+/**
+ * @brief Get the accumulated fault count.
+ *
+ * @return Number of reported faults.
+ */
+uint32_t
+om_health_monitor_fault_count(void);
 
 #ifdef __cplusplus
 }
