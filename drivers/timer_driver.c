@@ -1,69 +1,57 @@
-/**
- * @file timer_driver.c
- * @brief OrbitMesh timer driver.
- *
- * Provides a generic timer interface built on top
- * of the OrbitMesh HAL layer.
- *
- * @author OrbitMesh Contributors
- * @copyright Apache License 2.0
- */
+ /**
+  * @file timer_driver.c
+  * @brief OrbitMesh timer driver wrapper implementation.
+  */
 
-#include "orbitmesh/timer.h"
+#include "orbitmesh/drivers/timer_driver.h"
+
 #include "orbitmesh/error.h"
+#include "orbitmesh/timer.h"
 
-
-/*==============================================================================
- * Public API
- *============================================================================*/
 
 /**
- * @brief Initialize timer driver.
+ * @brief Initialize the timer driver.
  *
- * @param timer Timer identifier.
+ * The timer HAL manages the timer hardware initialization internally.
  *
- * @return OrbitMesh error code.
+ * @return OM_SUCCESS on success.
  */
 om_error_t
-om_timer_driver_init(
-    uint32_t timer)
+om_timer_driver_init(void)
 {
-    return om_timer_init(
+    return om_timer_init();
+}
+
+
+/**
+ * @brief Start a timer instance.
+ *
+ * @param timer Timer instance.
+ *
+ * @return OM_SUCCESS on success.
+ */
+om_error_t
+om_timer_driver_start(
+    om_timer_t *timer
+)
+{
+    return om_timer_start(
         timer
     );
 }
 
 
 /**
- * @brief Start hardware timer.
+ * @brief Stop a timer instance.
  *
- * @param timer Timer identifier.
- * @param frequency Timer frequency in Hz.
+ * @param timer Timer instance.
  *
- * @return OrbitMesh error code.
- */
-om_error_t
-om_timer_driver_start(
-    uint32_t timer,
-    uint32_t frequency)
-{
-    return om_timer_start(
-        timer,
-        frequency
-    );
-}
-
-
-/**
- * @brief Stop hardware timer.
- *
- * @param timer Timer identifier.
- *
- * @return OrbitMesh error code.
+ * @return OM_SUCCESS on success.
  */
 om_error_t
 om_timer_driver_stop(
-    uint32_t timer)
+    om_timer_t *timer
+)
 {
     return om_timer_stop(
         timer
@@ -74,15 +62,12 @@ om_timer_driver_stop(
 /**
  * @brief Get current timer tick count.
  *
- * @param timer Timer identifier.
+ * Uses the HAL tick counter exposed through the timer subsystem.
  *
- * @return Current tick value.
+ * @return Current tick count.
  */
 uint32_t
-om_timer_driver_get_ticks(
-    uint32_t timer)
+om_timer_driver_get_ticks(void)
 {
-    return om_timer_get_ticks(
-        timer
-    );
+    return om_timer_tick_count();
 }
