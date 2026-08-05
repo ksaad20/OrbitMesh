@@ -46,22 +46,28 @@ typedef void (*om_timer_callback_t)(
 /**
  * @brief Software timer object.
  *
- * Applications should treat this structure as opaque.
- * It is defined publicly because the MVP uses static allocation.
+ * The handle type is declared in types.h as:
+ *
+ *     typedef struct om_timer om_timer_t;
+ *
+ * This is the single definition of the structure.
  */
-typedef struct
+struct om_timer
 {
     bool allocated;
+
     bool running;
+
     bool periodic;
 
     om_tick_t period_ticks;
+
     om_tick_t remaining_ticks;
 
     om_timer_callback_t callback;
-    void *argument;
 
-} om_timer_t;
+    void *argument;
+};
 
 /*==============================================================================
  * Public API
@@ -81,7 +87,7 @@ om_timer_init(void);
  * @param timer Timer object.
  * @param period_ticks Timer period.
  * @param periodic True for a periodic timer.
- * @param callback Callback function.
+ * @param callback Timer callback.
  * @param argument Callback argument.
  *
  * @return OM_SUCCESS on success.
@@ -132,12 +138,16 @@ om_timer_reset(
 );
 
 /**
- * @brief Process timer updates.
+ * @brief Restart a timer.
  *
- * This function should be called once per system tick.
+ * @param timer Timer object.
+ *
+ * @return OM_SUCCESS on success.
  */
-void
-om_timer_tick(void);
+om_error_t
+om_timer_restart(
+    om_timer_t *timer
+);
 
 /**
  * @brief Determine whether a timer is running.
@@ -151,6 +161,32 @@ bool
 om_timer_is_running(
     const om_timer_t *timer
 );
+
+/**
+ * @brief Process one timer tick.
+ *
+ * Called once per kernel tick.
+ */
+void
+om_timer_tick(void);
+
+/*==============================================================================
+ * System Tick API
+ *============================================================================*/
+
+/**
+ * @brief Increment the kernel tick.
+ */
+void
+om_tick_increment(void);
+
+/**
+ * @brief Obtain the current kernel tick.
+ *
+ * @return Current system tick.
+ */
+om_tick_t
+om_tick_get(void);
 
 #ifdef __cplusplus
 }
