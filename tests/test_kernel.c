@@ -77,9 +77,8 @@ test_kernel_uptime(void)
 void
 run_test_kernel(void)
 {
-    test_kernel_configuration();
-
-    test_kernel_write();
-
-    test_kernel_read();
+    test_kernel_initialization();
 }
+
+void
+run_test_kernel(void);
