@@ -93,15 +93,12 @@ test_gpio_read(void)
  * Test Entry
  *============================================================================*/
 
-int
-main(void)
+void
+run_test_gpio(void)
 {
     test_gpio_configuration();
 
     test_gpio_write();
 
     test_gpio_read();
-
-
-    return 0;
 }
