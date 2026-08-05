@@ -48,7 +48,7 @@ typedef void (*om_timer_callback_t)(void *argument);
  * Applications should treat this structure as opaque.
  * It is defined publicly only because the MVP uses static allocation.
  */
-typedef struct
+struct om_timer
 {
     bool allocated;
     bool running;
@@ -59,8 +59,7 @@ typedef struct
 
     om_timer_callback_t callback;
     void *argument;
-
-} om_timer_t;
+};
 
 /*==============================================================================
  * Public API
