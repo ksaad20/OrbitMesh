@@ -2,11 +2,7 @@
  * @file timer.h
  * @brief OrbitMesh software timer API.
  *
- * Provides deterministic software timers for embedded and spacecraft
- * applications.
- *
- * The MVP implementation uses static allocation only and does not require
- * dynamic memory.
+ * Provides deterministic software timers for the OrbitMesh MVP.
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -35,9 +31,9 @@ extern "C"
  *============================================================================*/
 
 /**
- * @brief Software timer callback.
+ * @brief Timer callback function.
  *
- * @param argument User-supplied callback argument.
+ * @param argument User-supplied argument.
  */
 typedef void (*om_timer_callback_t)(
     void *argument
@@ -46,11 +42,11 @@ typedef void (*om_timer_callback_t)(
 /**
  * @brief Software timer object.
  *
- * The handle type is declared in types.h as:
+ * The handle type is declared in types.h:
  *
  *     typedef struct om_timer om_timer_t;
  *
- * This is the single definition of the structure.
+ * This is the single definition of the timer structure.
  */
 struct om_timer
 {
@@ -70,7 +66,7 @@ struct om_timer
 };
 
 /*==============================================================================
- * Public API
+ * Timer API
  *============================================================================*/
 
 /**
@@ -85,9 +81,9 @@ om_timer_init(void);
  * @brief Create a software timer.
  *
  * @param timer Timer object.
- * @param period_ticks Timer period.
+ * @param period_ticks Timer period in ticks.
  * @param periodic True for a periodic timer.
- * @param callback Timer callback.
+ * @param callback Callback function.
  * @param argument Callback argument.
  *
  * @return OM_SUCCESS on success.
@@ -138,24 +134,12 @@ om_timer_reset(
 );
 
 /**
- * @brief Restart a timer.
- *
- * @param timer Timer object.
- *
- * @return OM_SUCCESS on success.
- */
-om_error_t
-om_timer_restart(
-    om_timer_t *timer
-);
-
-/**
  * @brief Determine whether a timer is running.
  *
  * @param timer Timer object.
  *
  * @retval true Timer is running.
- * @retval false Timer is not running.
+ * @retval false Timer is stopped.
  */
 bool
 om_timer_is_running(
@@ -163,9 +147,9 @@ om_timer_is_running(
 );
 
 /**
- * @brief Process one timer tick.
+ * @brief Process timer updates.
  *
- * Called once per kernel tick.
+ * Called once every system tick.
  */
 void
 om_timer_tick(void);
@@ -176,14 +160,16 @@ om_timer_tick(void);
 
 /**
  * @brief Increment the kernel tick.
+ *
+ * Called by the platform timer interrupt.
  */
 void
 om_tick_increment(void);
 
 /**
- * @brief Obtain the current kernel tick.
+ * @brief Get the current kernel tick.
  *
- * @return Current system tick.
+ * @return Current tick count.
  */
 om_tick_t
 om_tick_get(void);
