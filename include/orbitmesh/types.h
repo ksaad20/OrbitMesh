@@ -94,6 +94,16 @@ typedef uint32_t om_task_id_t;
 typedef uint32_t om_timer_id_t;
 
 /**
+ * @brief SPI controller identifier.
+ */
+typedef uint32_t om_spi_id_t;
+
+/**
+ * @brief UART controller identifier.
+ */
+typedef uint32_t om_uart_id_t;
+
+/**
  * @brief Driver identifier.
  */
 typedef uint32_t om_driver_id_t;
