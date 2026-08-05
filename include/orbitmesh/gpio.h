@@ -2,7 +2,8 @@
  * @file gpio.h
  * @brief OrbitMesh GPIO Hardware Abstraction Layer.
  *
- * Provides a hardware-independent GPIO interface.
+ * Provides a hardware-independent interface for configuring and controlling
+ * General Purpose Input/Output (GPIO) peripherals across supported platforms.
  *
  * @author OrbitMesh Contributors
  * @copyright Apache License 2.0
@@ -31,7 +32,7 @@ extern "C"
  *============================================================================*/
 
 /**
- * @brief GPIO pin mode.
+ * @brief GPIO pin direction.
  */
 typedef enum
 {
@@ -39,9 +40,8 @@ typedef enum
     OM_GPIO_OUTPUT
 } om_gpio_mode_t;
 
-
 /**
- * @brief GPIO pull configuration.
+ * @brief GPIO pull resistor configuration.
  */
 typedef enum
 {
@@ -49,7 +49,6 @@ typedef enum
     OM_GPIO_PULL_UP,
     OM_GPIO_PULL_DOWN
 } om_gpio_pull_t;
-
 
 /**
  * @brief GPIO logic level.
@@ -60,83 +59,87 @@ typedef enum
     OM_GPIO_HIGH
 } om_gpio_level_t;
 
-
 /**
  * @brief GPIO pin configuration.
  */
 typedef struct
 {
+    /**
+     * @brief GPIO pin identifier.
+     */
     om_pin_t pin;
+
+    /**
+     * @brief GPIO operating mode.
+     */
     om_gpio_mode_t mode;
+
+    /**
+     * @brief Internal pull resistor configuration.
+     */
     om_gpio_pull_t pull;
 
 } om_gpio_config_t;
-
 
 /*==============================================================================
  * Public API
  *============================================================================*/
 
 /**
- * @brief Initialize GPIO subsystem.
+ * @brief Initialize the GPIO subsystem.
  *
- * @return OM_SUCCESS on success.
+ * @return OM_SUCCESS on success; otherwise an appropriate error code.
  */
 om_error_t
 om_gpio_init(void);
 
-
 /**
  * @brief Configure a GPIO pin.
  *
- * @param config GPIO configuration.
+ * @param[in] config Pointer to the GPIO configuration structure.
  *
- * @return OM_SUCCESS on success.
+ * @return OM_SUCCESS on success; otherwise an appropriate error code.
  */
 om_error_t
 om_gpio_configure(
     const om_gpio_config_t *config);
 
-
 /**
- * @brief Write a GPIO output level.
+ * @brief Write a logic level to a GPIO output pin.
  *
- * @param pin GPIO pin.
- * @param level Output level.
+ * @param[in] pin GPIO pin identifier.
+ * @param[in] level Logic level to drive.
  *
- * @return OM_SUCCESS on success.
+ * @return OM_SUCCESS on success; otherwise an appropriate error code.
  */
 om_error_t
 om_gpio_write(
     om_pin_t pin,
     om_gpio_level_t level);
 
-
 /**
- * @brief Read a GPIO input level.
+ * @brief Read the logic level of a GPIO pin.
  *
- * @param pin GPIO pin.
- * @param level Output storage.
+ * @param[in] pin GPIO pin identifier.
+ * @param[out] level Pointer that receives the current logic level.
  *
- * @return OM_SUCCESS on success.
+ * @return OM_SUCCESS on success; otherwise an appropriate error code.
  */
 om_error_t
 om_gpio_read(
     om_pin_t pin,
     om_gpio_level_t *level);
 
-
 /**
- * @brief Toggle a GPIO output.
+ * @brief Toggle the logic level of a GPIO output pin.
  *
- * @param pin GPIO pin.
+ * @param[in] pin GPIO pin identifier.
  *
- * @return OM_SUCCESS on success.
+ * @return OM_SUCCESS on success; otherwise an appropriate error code.
  */
 om_error_t
 om_gpio_toggle(
     om_pin_t pin);
-
 
 #ifdef __cplusplus
 }
