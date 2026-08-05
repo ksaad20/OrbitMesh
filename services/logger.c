@@ -12,17 +12,16 @@
 #include "orbitmesh/log.h"
 #include "orbitmesh/error.h"
 
+#include <stdbool.h>
 #include <stdarg.h>
 #include <stdio.h>
-
 
 /*==============================================================================
  * Private State
  *============================================================================*/
 
-static om_bool_t
+static bool
 g_logger_initialized = false;
-
 
 /*==============================================================================
  * Private Functions
@@ -43,19 +42,15 @@ om_log_write(
 {
     printf(
         "%s",
-        prefix
-    );
+        prefix);
 
     vprintf(
         format,
-        args
-    );
+        args);
 
     printf(
-        "\n"
-    );
+        "\n");
 }
-
 
 /*==============================================================================
  * Public API
@@ -74,19 +69,18 @@ om_logger_init(void)
     return OM_SUCCESS;
 }
 
-
 /**
  * @brief Write informational log message.
  *
- * @param format Message format string.
+ * @param format printf-style format string.
  */
 void
 om_log_info(
     const char *format,
     ...)
 {
-    if (!g_logger_initialized ||
-        format == NULL)
+    if ((!g_logger_initialized) ||
+        (format == NULL))
     {
         return;
     }
@@ -95,33 +89,29 @@ om_log_info(
 
     va_start(
         args,
-        format
-    );
+        format);
 
     om_log_write(
         "[INFO] ",
         format,
-        args
-    );
+        args);
 
     va_end(
-        args
-    );
+        args);
 }
-
 
 /**
  * @brief Write warning log message.
  *
- * @param format Message format string.
+ * @param format printf-style format string.
  */
 void
 om_log_warning(
     const char *format,
     ...)
 {
-    if (!g_logger_initialized ||
-        format == NULL)
+    if ((!g_logger_initialized) ||
+        (format == NULL))
     {
         return;
     }
@@ -130,33 +120,29 @@ om_log_warning(
 
     va_start(
         args,
-        format
-    );
+        format);
 
     om_log_write(
         "[WARN] ",
         format,
-        args
-    );
+        args);
 
     va_end(
-        args
-    );
+        args);
 }
-
 
 /**
  * @brief Write error log message.
  *
- * @param format Message format string.
+ * @param format printf-style format string.
  */
 void
 om_log_error(
     const char *format,
     ...)
 {
-    if (!g_logger_initialized ||
-        format == NULL)
+    if ((!g_logger_initialized) ||
+        (format == NULL))
     {
         return;
     }
@@ -165,16 +151,13 @@ om_log_error(
 
     va_start(
         args,
-        format
-    );
+        format);
 
     om_log_write(
         "[ERROR] ",
         format,
-        args
-    );
+        args);
 
     va_end(
-        args
-    );
+        args);
 }
