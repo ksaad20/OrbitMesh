@@ -7,7 +7,7 @@
 #define ORBITMESH_TASK_INTERNAL_H
 
 #include "kernel_internal.h"
-#include "orbitmesh/task.h"
+#include "task_control_block.h"
 
 extern om_task_t g_tasks[OM_CONFIG_MAX_TASKS];
 extern bool g_task_used[OM_CONFIG_MAX_TASKS];
