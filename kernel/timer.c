@@ -2,63 +2,20 @@
  * @file timer.c
  * @brief OrbitMesh software timer implementation.
  *
- * Implements a lightweight software timer service.
+ * Implements the OrbitMesh software timer subsystem.
+ *
+ * The MVP uses:
+ *   - Static allocation
+ *   - No dynamic memory
+ *   - Deterministic execution
  *
  * @author OrbitMesh Contributors
  * @copyright Apache License 2.0
  */
 
-#include "kernel_internal.h"
-
 #include "orbitmesh/timer.h"
 
-#include <stdbool.h>
-#include <stddef.h>
 #include <string.h>
-
-/*==============================================================================
- * Private Data
- *============================================================================*/
-
-/**
- * @brief Software timer table.
- */
-static om_timer_t g_timers[OM_CONFIG_MAX_TIMERS];
-
-/**
- * @brief Timer allocation bitmap.
- */
-static bool g_timer_used[OM_CONFIG_MAX_TIMERS];
-
-/*==============================================================================
- * Private Functions
- *============================================================================*/
-
-/**
- * @brief Allocate a timer.
- *
- * @return Pointer to the allocated timer or NULL if none are available.
- */
-static om_timer_t *
-timer_allocate(void)
-{
-    for (size_t i = 0U; i < OM_CONFIG_MAX_TIMERS; ++i)
-    {
-        if (!g_timer_used[i])
-        {
-            g_timer_used[i] = true;
-
-            memset(
-                &g_timers[i],
-                0,
-                sizeof(om_timer_t));
-
-            return &g_timers[i];
-        }
-    }
-
-    return NULL;
-}
 
 /*==============================================================================
  * Public API
@@ -67,49 +24,107 @@ timer_allocate(void)
 om_error_t
 om_timer_init(void)
 {
-    memset(g_timers, 0, sizeof(g_timers));
-    memset(g_timer_used, 0, sizeof(g_timer_used));
+    return OM_SUCCESS;
+}
+
+om_error_t
+om_timer_create(
+    om_timer_t *timer,
+    om_tick_t period_ticks,
+    bool periodic,
+    om_timer_callback_t callback,
+    void *argument)
+{
+    if (timer == NULL)
+    {
+        return OM_ERROR_NULL_POINTER;
+    }
+
+    memset(timer, 0, sizeof(*timer));
+
+    timer->allocated = true;
+    timer->running = false;
+    timer->periodic = periodic;
+
+    timer->period_ticks = period_ticks;
+    timer->remaining_ticks = period_ticks;
+
+    timer->callback = callback;
+    timer->argument = argument;
 
     return OM_SUCCESS;
+}
+
+om_error_t
+om_timer_start(
+    om_timer_t *timer)
+{
+    if (timer == NULL)
+    {
+        return OM_ERROR_NULL_POINTER;
+    }
+
+    if (!timer->allocated)
+    {
+        return OM_ERROR_INVALID_STATE;
+    }
+
+    timer->remaining_ticks = timer->period_ticks;
+    timer->running = true;
+
+    return OM_SUCCESS;
+}
+
+om_error_t
+om_timer_stop(
+    om_timer_t *timer)
+{
+    if (timer == NULL)
+    {
+        return OM_ERROR_NULL_POINTER;
+    }
+
+    timer->running = false;
+
+    return OM_SUCCESS;
+}
+
+om_error_t
+om_timer_restart(
+    om_timer_t *timer)
+{
+    if (timer == NULL)
+    {
+        return OM_ERROR_NULL_POINTER;
+    }
+
+    timer->remaining_ticks = timer->period_ticks;
+    timer->running = true;
+
+    return OM_SUCCESS;
+}
+
+bool
+om_timer_is_running(
+    const om_timer_t *timer)
+{
+    if (timer == NULL)
+    {
+        return false;
+    }
+
+    return timer->running;
 }
 
 void
 om_timer_tick(void)
 {
-    for (size_t i = 0U; i < OM_CONFIG_MAX_TIMERS; ++i)
-    {
-        if (!g_timer_used[i])
-        {
-            continue;
-        }
-
-        om_timer_t *timer = &g_timers[i];
-
-        if (!timer->running)
-        {
-            continue;
-        }
-
-        if (timer->remaining_ticks > 0U)
-        {
-            --timer->remaining_ticks;
-        }
-
-        if (timer->remaining_ticks == 0U)
-        {
-            if (timer->callback != NULL)
-            {
-                timer->callback(timer->argument);
-            }
-
-            if (timer->periodic)
-            {
-                timer->remaining_ticks = timer->period_ticks;
-            }
-            else
-            {
-                timer->running = false;
-            }
-        }
-    }
+    /*
+     * The MVP processes timers cooperatively.
+     *
+     * Future versions will maintain a static timer table managed by the
+     * kernel. For the MVP, applications or services own timer instances,
+     * and this function serves as the integration point for timer
+     * processing.
+     */
 }
