@@ -128,3 +128,21 @@ Hardware
 
 ```
 
+Architecture Improvement 
+
+```
+
+Applications
+      │
+      ▼
+ task.h (public API)
+      │
+      ▼
+ task.c  ─────────────┐
+      ▲               │
+      │               ▼
+ task_internal.h   scheduler.c
+            ▲           │
+            └───────────┘
+
+
