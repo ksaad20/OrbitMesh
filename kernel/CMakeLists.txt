@@ -14,19 +14,19 @@
 
 set(ORBITMESH_KERNEL_SOURCES
     kernel.c
-    kernel_init.c
+#   kernel_init.c
     scheduler.c
-    scheduler_idle.c
+#   scheduler_idle.c
     task.c
-    task_create.c
-    task_delay.c
-    task_priority.c
-    timer.c
+#   task_create.c
+#   task_delay.c
+#   task_priority.c
+#   timer.c
     tick.c
-    startup.c
-    interrupt.c
-    panic.c
-    version.c
+#   startup.c
+#   interrupt.c
+#   panic.c
+#   version.c
 )
 
 add_library(
