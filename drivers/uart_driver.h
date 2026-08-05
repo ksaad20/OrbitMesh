@@ -1,8 +1,8 @@
 #ifndef ORBITMESH_UART_DRIVER_H
 #define ORBITMESH_UART_DRIVER_H
 
+#include "orbitmesh/drivers/uart_driver.h"
 #include "orbitmesh/error.h"
-#include "orbitmesh/uart.h"
 
 om_error_t om_uart_driver_init(void);
 
