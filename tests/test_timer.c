@@ -11,26 +11,6 @@
 #include "orbitmesh/timer.h"
 
 
-/*==============================================================================
- * Test Callback
- *============================================================================*/
-
-static void
-timer_callback(
-    void *argument
-)
-{
-    (void)argument;
-}
-
-
-/*==============================================================================
- * Test Cases
- *============================================================================*/
-
-/**
- * @brief Verify timer initialization.
- */
 static void
 test_timer_initialization(void)
 {
@@ -46,9 +26,6 @@ test_timer_initialization(void)
 }
 
 
-/**
- * @brief Verify timer creation and starting.
- */
 static void
 test_timer_start(void)
 {
@@ -60,7 +37,8 @@ test_timer_start(void)
     result = om_timer_create(
         &timer,
         1000U,
-        timer_callback,
+        NULL,
+        NULL,
         NULL
     );
 
@@ -81,9 +59,6 @@ test_timer_start(void)
 }
 
 
-/**
- * @brief Verify timer tick processing.
- */
 static void
 test_timer_ticks(void)
 {
@@ -92,25 +67,13 @@ test_timer_ticks(void)
     om_timer_tick();
 
 
-    /*
-     * Tick execution reaching this point
-     * indicates that the timer tick handler
-     * executes without failure.
-     */
     assert(
         true
     );
 }
 
 
-/*==============================================================================
- * Test Runner
- *============================================================================*/
-
-/**
- * @brief Execute timer tests.
- */
-static void
+void
 run_test_timer(void)
 {
     test_timer_initialization();
