@@ -17,15 +17,15 @@
 
 set(ORBITMESH_HAL_SOURCES
     hal.c
-    clock.c
+#   clock.c 
     gpio.c
     uart.c
-    spi.c
-    i2c.c
+#   spi.c
+#   i2c.c
     timer.c
-    interrupt.c
-    power.c
-    reset.c
+#   interrupt.c
+#   power.c
+#   reset.c
 )
 
 add_library(
