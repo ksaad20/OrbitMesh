@@ -105,11 +105,12 @@ run_test_timer(void)
 }
 
 
-int
-main(void)
+void
+run_test_timer(void)
 {
-    run_test_timer();
+    test_timer_configuration();
 
+    test_timer_write();
 
-    return 0;
+    test_timer_read();
 }
