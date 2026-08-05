@@ -199,3 +199,108 @@ om_task_current(void)
 {
     return g_current_task;
 }
+
+/*==============================================================================
+ * Public API (continued)
+ *============================================================================*/
+
+void
+om_task_yield(void)
+{
+    /*
+     * Cooperative scheduling:
+     * Yielding simply invokes the scheduler. The scheduler
+     * decides which READY task to run next.
+     */
+    om_scheduler_run();
+}
+
+void
+om_task_delay(
+    om_tick_t ticks)
+{
+    if (g_current_task == NULL)
+    {
+        return;
+    }
+
+    g_current_task->delay_ticks = ticks;
+    g_current_task->state = OM_TASK_SLEEPING;
+
+    om_scheduler_run();
+}
+
+om_error_t
+om_task_suspend(
+    om_task_t *task)
+{
+    if (task == NULL)
+    {
+        return OM_ERROR_NULL_POINTER;
+    }
+
+    task->state = OM_TASK_SUSPENDED;
+
+    return OM_SUCCESS;
+}
+
+om_error_t
+om_task_resume(
+    om_task_t *task)
+{
+    if (task == NULL)
+    {
+        return OM_ERROR_NULL_POINTER;
+    }
+
+    if (task->state == OM_TASK_SUSPENDED)
+    {
+        task->state = OM_TASK_READY;
+    }
+
+    return OM_SUCCESS;
+}
+
+om_error_t
+om_task_set_priority(
+    om_task_t *task,
+    om_priority_t priority)
+{
+    if (task == NULL)
+    {
+        return OM_ERROR_NULL_POINTER;
+    }
+
+    if (priority > OM_CONFIG_MAX_PRIORITY)
+    {
+        return OM_ERROR_INVALID_ARGUMENT;
+    }
+
+    task->priority = priority;
+
+    return OM_SUCCESS;
+}
+
+om_priority_t
+om_task_priority(
+    const om_task_t *task)
+{
+    if (task == NULL)
+    {
+        return 0U;
+    }
+
+    return task->priority;
+}
+
+om_task_state_t
+om_task_state(
+    const om_task_t *task)
+{
+    if (task == NULL)
+    {
+        return OM_TASK_TERMINATED;
+    }
+
+    return task->state;
+}
