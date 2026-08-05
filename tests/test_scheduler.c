@@ -74,5 +74,9 @@ test_scheduler(void)
 void
 run_test_scheduler(void)
 {
-    test_scheduler();
+    test_scheduler_configuration();
+
+    test_scheduler_write();
+
+    test_scheduler_read();
 }
