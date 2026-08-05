@@ -2,84 +2,98 @@
  * @file test_task.c
  * @brief OrbitMesh task unit tests.
  *
+ * Validates task creation and delay behavior.
+ *
  * SPDX-License-Identifier: Apache-2.0
  */
-
-#include "orbitmesh/task.h"
 
 #include <assert.h>
 #include <stdio.h>
 
+#include "orbitmesh/task.h"
+
+
+/*==============================================================================
+ * Test Prototypes
+ *============================================================================*/
+
+void
+run_test_task(void);
+
+
+/*==============================================================================
+ * Test Helpers
+ *============================================================================*/
 
 static void
-task_test_function(
-    void *argument)
+dummy_task(
+    void *argument
+)
 {
     (void)argument;
 }
 
 
-/**
- * @brief Test task creation.
- */
+/*==============================================================================
+ * Tests
+ *============================================================================*/
+
 static void
 test_task_creation(void)
 {
-    om_task_config_t config =
-    {
-        .name = "unit_task",
-        .entry = task_test_function,
-        .argument = NULL,
-        .stack = NULL,
-        .stack_size = 0U,
-        .priority = 0U
-    };
-
-    om_task_t *task = NULL;
+    om_task_t task;
 
     om_error_t result;
 
+
     result =
         om_task_create(
-            &config,
-            &task
+            &task,
+            "test_task",
+            dummy_task,
+            NULL,
+            NULL,
+            0U
         );
+
 
     assert(
         result == OM_SUCCESS
     );
-
-    assert(
-        task != NULL
-    );
 }
 
 
-/**
- * @brief Test task delay API.
- */
 static void
 test_task_delay(void)
 {
-    /*
-     * Delay is a scheduler operation and has no return value.
-     */
-    om_task_delay(
-        10U
+    om_error_t result;
+
+
+    result =
+        om_task_delay(
+            1U
+        );
+
+
+    assert(
+        result == OM_SUCCESS
     );
 }
 
 
-/**
- * @brief Run task tests.
- */
+/*==============================================================================
+ * Test Entry
+ *============================================================================*/
+
 void
 run_test_task(void)
 {
     test_task_creation();
 
     test_task_delay();
-}
 
-void
-run_test_task(void);
+
+    printf(
+        "Task tests passed\n"
+    );
+}
