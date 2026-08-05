@@ -2,7 +2,7 @@
  * @file log.h
  * @brief OrbitMesh logging service interface.
  *
- * Provides a generic logging API for OrbitMesh services.
+ * Provides a lightweight logging API for OrbitMesh services.
  *
  * @author OrbitMesh Contributors
  * @copyright Apache License 2.0
@@ -22,58 +22,49 @@ extern "C"
 
 #include "orbitmesh/error.h"
 
-#include <stdarg.h>
-
-/*==============================================================================
- * Log Levels
- *============================================================================*/
-
-/**
- * @brief Logging severity levels.
- */
-typedef enum
-{
-    OM_LOG_DEBUG = 0,
-    OM_LOG_INFO,
-    OM_LOG_WARNING,
-    OM_LOG_ERROR,
-    OM_LOG_FATAL
-} om_log_level_t;
+#include <stdbool.h>
 
 /*==============================================================================
  * Public API
  *============================================================================*/
 
 /**
- * @brief Initialize the logging subsystem.
+ * @brief Initialize the logging service.
  *
  * @return OM_SUCCESS on success.
  */
 om_error_t
-om_log_init(void);
+om_logger_init(void);
+
 
 /**
- * @brief Write a formatted log message.
+ * @brief Log an informational message.
  *
- * @param level Log severity.
- * @param format printf-style format string.
- * @param ... Format arguments.
- *
- * @return OM_SUCCESS on success.
+ * @param message Null-terminated message string.
  */
-om_error_t
-om_log(
-    om_log_level_t level,
-    const char *format,
-    ...);
+void
+om_log_info(
+    const char *message);
+
 
 /**
- * @brief Flush pending log output.
+ * @brief Log a warning message.
  *
- * @return OM_SUCCESS on success.
+ * @param message Null-terminated message string.
  */
-om_error_t
-om_log_flush(void);
+void
+om_log_warning(
+    const char *message);
+
+
+/**
+ * @brief Log an error message.
+ *
+ * @param message Null-terminated message string.
+ */
+void
+om_log_error(
+    const char *message);
 
 #ifdef __cplusplus
 }
