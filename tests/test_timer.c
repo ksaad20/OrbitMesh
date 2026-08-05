@@ -12,6 +12,12 @@
 
 
 static void
+timer_callback(void)
+{
+}
+
+
+static void
 test_timer_initialization(void)
 {
     om_error_t result;
@@ -38,7 +44,8 @@ test_timer_start(void)
     result =
         om_timer_create(
             &timer,
-            1000U
+            1000U,
+            timer_callback
         );
 
 
