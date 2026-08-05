@@ -1,48 +1,39 @@
- /**
+/**
  * @file spi_driver.c
- * @brief OrbitMesh SPI driver.
+ * @brief OrbitMesh SPI driver implementation.
  *
- * Provides a generic SPI interface built on top
- * of the OrbitMesh HAL layer.
+ * Provides a simplified SPI driver interface over the SPI HAL.
  *
- * @author OrbitMesh Contributors
  * @copyright Apache License 2.0
  */
 
-#include <stddef.h>
-#include <stdint.h>
-
 #include "orbitmesh/drivers/spi_driver.h"
+
 #include "orbitmesh/error.h"
 #include "orbitmesh/spi.h"
 
 
-/*==============================================================================
- * Public API
- *============================================================================*/
+#define OM_SPI_DEFAULT_ID ((om_spi_id_t)0U)
+
 
 /**
  * @brief Initialize SPI driver.
- *
- * Initializes the SPI subsystem through the OrbitMesh HAL.
  *
  * @return OrbitMesh error code.
  */
 om_error_t
 om_spi_driver_init(void)
 {
-    return om_spi_init();
+    return OM_SUCCESS;
 }
 
 
 /**
- * @brief Transfer SPI data.
- *
- * Performs full duplex SPI communication.
+ * @brief Transfer data over SPI.
  *
  * @param tx Transmit buffer.
  * @param rx Receive buffer.
- * @param length Number of bytes to transfer.
+ * @param length Transfer length.
  *
  * @return OrbitMesh error code.
  */
@@ -52,17 +43,8 @@ om_spi_driver_transfer(
     uint8_t *rx,
     size_t length)
 {
-    if (tx == NULL || rx == NULL)
-    {
-        return OM_ERROR_NULL_POINTER;
-    }
-
-    if (length == 0U)
-    {
-        return OM_ERROR_INVALID_ARGUMENT;
-    }
-
     return om_spi_transfer(
+        OM_SPI_DEFAULT_ID,
         tx,
         rx,
         length
