@@ -111,17 +111,12 @@ test_uart_read_byte(void)
  * Test Entry
  *============================================================================*/
 
-int
-main(void)
+void
+run_test_uart(void)
 {
-    test_uart_initialization();
-
     test_uart_configuration();
 
     test_uart_write();
 
-    test_uart_read_byte();
-
-
-    return 0;
+    test_uart_read();
 }
