@@ -1,9 +1,9 @@
 /**
  * @file task_internal.h
- * @brief Internal task management definitions.
+ * @brief Internal task subsystem declarations.
  *
- * Private definitions shared by the OrbitMesh kernel task subsystem.
- * This header is not part of the public API.
+ * Private declarations shared by the OrbitMesh task subsystem.
+ * This header is NOT part of the public API.
  *
  * @author OrbitMesh Contributors
  * @copyright Apache License 2.0
@@ -13,8 +13,7 @@
 #define ORBITMESH_TASK_INTERNAL_H
 
 #include "kernel_internal.h"
-
-#include "orbitmesh/task.h"
+#include "task_control_block.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -31,64 +30,23 @@ extern "C"
 #define OM_TASK_INVALID_ID ((om_task_id_t)0U)
 
 /*==============================================================================
- * Internal Task Structure
+ * Internal Task Storage
  *============================================================================*/
 
 /**
- * @brief Internal task control block (TCB).
+ * @brief Static task table.
  */
-struct om_task
-{
-    /**
-     * Unique task identifier.
-     */
-    om_task_id_t id;
+extern om_task_t g_tasks[];
 
-    /**
-     * Human-readable task name.
-     */
-    const char *name;
+/**
+ * @brief Allocation bitmap for task table.
+ */
+extern bool g_task_used[];
 
-    /**
-     * Task entry function.
-     */
-    om_task_function_t entry;
-
-    /**
-     * User-supplied argument.
-     */
-    void *argument;
-
-    /**
-     * Base of the task stack.
-     */
-    void *stack;
-
-    /**
-     * Stack size in bytes.
-     */
-    om_size_t stack_size;
-
-    /**
-     * Current scheduling priority.
-     */
-    om_priority_t priority;
-
-    /**
-     * Current task state.
-     */
-    om_task_state_t state;
-
-    /**
-     * Delay remaining in scheduler ticks.
-     */
-    om_tick_t delay_ticks;
-
-    /**
-     * Next task in an internal linked list.
-     */
-    struct om_task *next;
-};
+/**
+ * @brief Currently running task.
+ */
+extern om_task_t *g_current_task;
 
 /*==============================================================================
  * Internal API
@@ -103,20 +61,35 @@ om_error_t
 om_task_init(void);
 
 /**
- * @brief Get the scheduler idle task.
+ * @brief Return the idle task.
  *
- * @return Idle task.
+ * @return Pointer to idle task.
  */
 om_task_t *
 om_task_idle(void);
 
 /**
- * @brief Update delayed tasks.
- *
- * Called once per scheduler tick.
+ * @brief Advance delayed tasks by one scheduler tick.
  */
 void
 om_task_tick(void);
+
+/**
+ * @brief Find a task by identifier.
+ *
+ * @param id Task identifier.
+ *
+ * @return Pointer to task or NULL.
+ */
+om_task_t *
+om_task_find(
+    om_task_id_t id);
+
+/**
+ * @brief Reset all task subsystem state.
+ */
+void
+om_task_reset(void);
 
 #ifdef __cplusplus
 }
