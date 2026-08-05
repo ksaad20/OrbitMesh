@@ -1,4 +1,4 @@
- /**
+/**
  * @file timer.h
  * @brief OrbitMesh software timer API.
  *
@@ -28,9 +28,9 @@ extern "C"
  *============================================================================*/
 
 /**
- * @brief Timer callback.
+ * @brief Timer callback function.
  *
- * @param argument User argument.
+ * @param argument User-supplied callback argument.
  */
 typedef void (*om_timer_callback_t)(
     void *argument
@@ -39,7 +39,11 @@ typedef void (*om_timer_callback_t)(
 /**
  * @brief Software timer object.
  *
- * Full definition for the MVP.
+ * The public handle is declared in types.h:
+ *
+ *     typedef struct om_timer om_timer_t;
+ *
+ * This file provides the full definition required by the MVP.
  */
 struct om_timer
 {
