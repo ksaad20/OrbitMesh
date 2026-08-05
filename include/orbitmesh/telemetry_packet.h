@@ -40,7 +40,7 @@ typedef struct
     /**
      * @brief Current health status.
      */
-    om_health_status_t health;
+    om_health_state_t health;
 
     /**
      * @brief Number of recorded events.
