@@ -1,62 +1,44 @@
 /**
  * @file uart_driver.c
- * @brief OrbitMesh UART driver.
+ * @brief OrbitMesh UART driver interface implementation.
  *
- * Provides a generic UART interface built on
- * top of the OrbitMesh HAL.
+ * Provides a driver-level abstraction over the UART HAL.
  *
- * @author OrbitMesh Contributors
  * @copyright Apache License 2.0
  */
 
-#include "orbitmesh/uart.h"
-#include "orbitmesh/error.h"
 #include "orbitmesh/drivers/uart.h"
 
-/*==============================================================================
- * Public API
- *============================================================================*/
+#include "orbitmesh/error.h"
+#include "orbitmesh/uart.h"
+
 
 /**
  * @brief Initialize UART driver.
  *
- * @param uart UART peripheral identifier.
- *
- * @return OrbitMesh error code.
+ * @return OM_SUCCESS on success.
  */
 om_error_t
-om_uart_driver_init(
-    om_uart_id_t uart)
+om_uart_driver_init(void)
 {
-    return om_uart_init(
-        uart
-    );
+    return om_uart_init();
 }
 
 
 /**
- * @brief Send bytes through UART.
+ * @brief Write data through UART driver.
  *
- * @param uart UART peripheral identifier.
- * @param data Data buffer.
- * @param length Number of bytes.
+ * @param data Buffer containing bytes to transmit.
+ * @param length Number of bytes to transmit.
  *
- * @return OrbitMesh error code.
+ * @return OM_SUCCESS on success.
  */
 om_error_t
 om_uart_driver_write(
-    om_uart_id_t uart,
     const uint8_t *data,
     size_t length)
 {
-    if (data == NULL)
-    {
-        return OM_ERROR_NULL_POINTER;
-    }
-
-
     return om_uart_write(
-        uart,
         data,
         length
     );
@@ -64,29 +46,20 @@ om_uart_driver_write(
 
 
 /**
- * @brief Receive bytes from UART.
+ * @brief Read data through UART driver.
  *
- * @param uart UART peripheral identifier.
- * @param buffer Destination buffer.
- * @param length Buffer length.
+ * @param data Buffer receiving bytes.
+ * @param length Maximum number of bytes to read.
  *
- * @return OrbitMesh error code.
+ * @return OM_SUCCESS on success.
  */
 om_error_t
 om_uart_driver_read(
-    om_uart_id_t uart,
-    uint8_t *buffer,
+    uint8_t *data,
     size_t length)
 {
-    if (buffer == NULL)
-    {
-        return OM_ERROR_NULL_POINTER;
-    }
-
-
     return om_uart_read(
-        uart,
-        buffer,
+        data,
         length
     );
 }
