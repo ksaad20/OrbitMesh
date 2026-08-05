@@ -33,6 +33,7 @@ om_i2c_driver_write(
     }
 
     return om_i2c_write(
+        0U,
         address,
         data,
         length
@@ -57,6 +58,7 @@ om_i2c_driver_read(
     }
 
     return om_i2c_read(
+        0U,
         address,
         data,
         length
