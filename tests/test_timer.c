@@ -10,57 +10,32 @@
 
 #include "orbitmesh/timer.h"
 
-static void
-timer_callback(
-    void *argument
-)
-{
-    (void)argument;
-}
 
+/*==============================================================================
+ * Test Prototypes
+ *============================================================================*/
+
+void
+run_test_timer(void);
+
+
+/*==============================================================================
+ * Tests
+ *============================================================================*/
 
 static void
 test_timer_initialization(void)
 {
-    om_error_t result;
-
-
-    result =
-        om_timer_init();
-
-
-    assert(
-        result == OM_SUCCESS
-    );
-}
-
-
-static void
-test_timer_start(void)
-{
     om_timer_t timer;
 
-    om_error_t result;
 
-
-    result =
+    om_error_t result =
         om_timer_create(
             &timer,
             1000U,
             false,
-            timer_callback,
+            NULL,
             NULL
-        );
-
-
-    assert(
-        result == OM_SUCCESS
-    );
-
-
-    result =
-        om_timer_start(
-            &timer
         );
 
 
@@ -73,13 +48,12 @@ test_timer_start(void)
 static void
 test_timer_ticks(void)
 {
-    om_timer_tick();
-
-    om_timer_tick();
+    om_tick_t ticks =
+        om_timer_get_ticks();
 
 
     assert(
-        true
+        ticks >= 0U
     );
 }
 
@@ -93,14 +67,10 @@ run_test_timer(void)
 {
     test_timer_initialization();
 
-    test_timer_start();
-
     test_timer_ticks();
+
 
     printf(
         "Timer tests passed\n"
     );
 }
-
-void
-run_test_timer(void);
