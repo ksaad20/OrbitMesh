@@ -56,13 +56,12 @@ test_console_write(void)
  * Test Entry
  *============================================================================*/
 
-int
-main(void)
+void
+run_test_console(void)
 {
-    test_console_initialization();
+    test_console_configuration();
 
     test_console_write();
 
-
-    return 0;
+    test_console_read();
 }
