@@ -325,3 +325,33 @@ om_task_state(
 
     return task->state;
 }
+
+/**
+ * @brief Update delayed tasks on each system tick.
+ */
+void
+om_task_tick(void)
+{
+    for (om_size_t i = 0U; i < OM_CONFIG_MAX_TASKS; ++i)
+    {
+        if (!g_task_used[i])
+        {
+            continue;
+        }
+
+        if (g_tasks[i].state != OM_TASK_BLOCKED)
+        {
+            continue;
+        }
+
+        if (g_tasks[i].delay_ticks > 0U)
+        {
+            --g_tasks[i].delay_ticks;
+        }
+
+        if (g_tasks[i].delay_ticks == 0U)
+        {
+            g_tasks[i].state = OM_TASK_READY;
+        }
+    }
+}
