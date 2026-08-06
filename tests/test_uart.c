@@ -1,36 +1,44 @@
 #include <assert.h>
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #include "orbitmesh/uart.h"
 
-
 void run_test_uart(void);
-
 
 static void
 test_uart_initialization(void)
 {
-    const int result = om_uart_init();
+    const om_error_t result = om_uart_init();
 
-    assert(result == 0);
+    assert(result == OM_SUCCESS);
 }
-
 
 static void
 test_uart_write(void)
 {
-    const uint8_t message[] = "OrbitMesh";
+    const om_uart_config_t config =
+    {
+        .id = 0U,
+        .baudrate = 115200U,
+        .data_bits = OM_UART_DATA_BITS_8,
+        .stop_bits = OM_UART_STOP_BITS_1,
+        .parity = OM_UART_PARITY_NONE,
+    };
 
-    const int result = om_uart_write(
+    om_error_t result = om_uart_configure(&config);
+
+    assert(result == OM_SUCCESS);
+
+    static const uint8_t message[] = "OrbitMesh";
+
+    result = om_uart_write(
         0U,
         message,
-        sizeof(message) - 1U
-    );
+        sizeof(message) - 1U);
 
-    assert(result == 0);
+    assert(result == OM_SUCCESS);
 }
-
 
 void
 run_test_uart(void)
