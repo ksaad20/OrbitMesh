@@ -9,8 +9,7 @@
  * - No dynamic memory.
  * - Deterministic behavior.
  *
- * @author OrbitMesh Contributors
- * @copyright Apache License 2.0
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 #include "orbitmesh/gpio.h"
@@ -19,45 +18,19 @@
 #include <stddef.h>
 #include <string.h>
 
-/*==============================================================================
- * Configuration
- *============================================================================*/
-
-/**
- * @brief Maximum supported GPIO pins in MVP simulation.
- *
- * Platform ports may override this value.
- */
 #ifndef OM_GPIO_MAX_PINS
 #define OM_GPIO_MAX_PINS 128U
 #endif
 
-/*==============================================================================
- * Private Data
- *============================================================================*/
-
-/**
- * @brief GPIO pin state.
- */
 typedef struct
 {
     bool configured;
     om_gpio_mode_t mode;
     om_gpio_pull_t pull;
     om_gpio_level_t level;
-
 } om_gpio_pin_state_t;
 
-
-/**
- * @brief GPIO state table.
- */
 static om_gpio_pin_state_t g_gpio_pins[OM_GPIO_MAX_PINS];
-
-
-/*==============================================================================
- * Public API
- *============================================================================*/
 
 om_error_t
 om_gpio_init(void)
@@ -69,7 +42,6 @@ om_gpio_init(void)
 
     return OM_SUCCESS;
 }
-
 
 om_error_t
 om_gpio_configure(
@@ -93,59 +65,55 @@ om_gpio_configure(
     return OM_SUCCESS;
 }
 
-
-static void
-test_gpio_write(void)
+om_error_t
+om_gpio_write(
+    om_pin_t pin,
+    om_gpio_level_t level)
 {
-    const om_gpio_config_t config =
+    if (pin >= OM_GPIO_MAX_PINS)
     {
-        .pin = 1U,
-        .mode = OM_GPIO_OUTPUT,
-        .pull = OM_GPIO_NO_PULL,
-    };
+        return OM_ERROR_INVALID_ARGUMENT;
+    }
 
-    int result = om_gpio_configure(&config);
-    assert(result == OM_SUCCESS);
+    if (!g_gpio_pins[pin].configured)
+    {
+        return OM_ERROR_INVALID_STATE;
+    }
 
-    result = om_gpio_write(
-        1U,
-        OM_GPIO_HIGH
-    );
+    if (g_gpio_pins[pin].mode != OM_GPIO_OUTPUT)
+    {
+        return OM_ERROR_INVALID_STATE;
+    }
 
-    assert(result == OM_SUCCESS);
+    g_gpio_pins[pin].level = level;
+
+    return OM_SUCCESS;
 }
 
-
-static void
-test_gpio_read(void)
+om_error_t
+om_gpio_read(
+    om_pin_t pin,
+    om_gpio_level_t *level)
 {
-    const om_gpio_config_t config =
+    if (level == NULL)
     {
-        .pin = 1U,
-        .mode = OM_GPIO_OUTPUT,
-        .pull = OM_GPIO_NO_PULL,
-    };
+        return OM_ERROR_NULL_POINTER;
+    }
 
-    int result = om_gpio_configure(&config);
-    assert(result == OM_SUCCESS);
+    if (pin >= OM_GPIO_MAX_PINS)
+    {
+        return OM_ERROR_INVALID_ARGUMENT;
+    }
 
-    result = om_gpio_write(
-        1U,
-        OM_GPIO_HIGH
-    );
-    assert(result == OM_SUCCESS);
+    if (!g_gpio_pins[pin].configured)
+    {
+        return OM_ERROR_INVALID_STATE;
+    }
 
-    om_gpio_level_t level = OM_GPIO_LOW;
+    *level = g_gpio_pins[pin].level;
 
-    result = om_gpio_read(
-        1U,
-        &level
-    );
-    assert(result == OM_SUCCESS);
-
-    assert(level == OM_GPIO_HIGH);
+    return OM_SUCCESS;
 }
-
 
 om_error_t
 om_gpio_toggle(
