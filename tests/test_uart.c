@@ -4,7 +4,8 @@
 
 #include "orbitmesh/uart.h"
 
-void run_test_uart(void);
+void
+run_test_uart(void);
 
 static void
 test_uart_initialization(void)
@@ -20,13 +21,14 @@ test_uart_write(void)
     const om_uart_config_t config =
     {
         .id = 0U,
-        .baudrate = 115200U,
-        .data_bits = OM_UART_DATA_BITS_8,
-        .stop_bits = OM_UART_STOP_BITS_1,
+        .baud_rate = 115200U,
+        .data_bits = 8U,
         .parity = OM_UART_PARITY_NONE,
+        .stop_bits = OM_UART_STOP_BITS_1,
     };
 
-    om_error_t result = om_uart_configure(&config);
+    om_error_t result = om_uart_configure(
+        &config);
 
     assert(result == OM_SUCCESS);
 
