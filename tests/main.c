@@ -7,30 +7,32 @@
 
 #include <stdio.h>
 
+void
+run_test_kernel(void);
 
-void run_test_kernel(void);
-void run_test_task(void);
-void run_test_scheduler(void);
-void run_test_timer(void);
-void run_test_hal(void);
-void run_test_gpio(void);
-void run_test_uart(void);
-void run_test_health_monitor(void);
-void run_test_heartbeat(void);
+void
+run_test_task(void);
 
-add_executable(
-    orbitmesh_tests
-    main.c
-    test_kernel.c
-    test_task.c
-    test_scheduler.c
-    test_timer.c
-    test_hal.c
-    test_gpio.c
-    test_uart.c
-    test_health_monitor.c
-    test_heartbeat.c
-)
+void
+run_test_scheduler(void);
+
+void
+run_test_timer(void);
+
+void
+run_test_hal(void);
+
+void
+run_test_gpio(void);
+
+void
+run_test_uart(void);
+
+void
+run_test_health_monitor(void);
+
+void
+run_test_heartbeat(void);
 
 int
 main(void)
@@ -53,11 +55,9 @@ main(void)
 
     run_test_heartbeat();
 
-
     printf(
         "All OrbitMesh tests passed\n"
     );
-
 
     return 0;
 }
