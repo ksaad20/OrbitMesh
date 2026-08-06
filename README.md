@@ -1,5 +1,24 @@
 # OrbitMesh
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21816589.svg)](https://doi.org/10.5281/zenodo.21816589)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![C17](https://img.shields.io/badge/C-C17-blue.svg)](https://en.cppreference.com/w/c/17)
+[![CMake](https://img.shields.io/badge/CMake-3.20+-064F8C.svg?logo=cmake)](https://cmake.org)
+[![GitHub Actions](https://github.com/ksaad20/OrbitMesh/actions/workflows/ci.yml/badge.svg)](https://github.com/ksaad20/OrbitMesh/actions/workflows/ci.yml)
+[![GitHub release](https://img.shields.io/github/v/release/ksaad20/OrbitMesh)](https://github.com/ksaad20/OrbitMesh/releases)
+[![GitHub tag](https://img.shields.io/github/v/tag/ksaad20/OrbitMesh)](https://github.com/ksaad20/OrbitMesh/tags)
+[![GitHub issues](https://img.shields.io/github/issues/ksaad20/OrbitMesh)](https://github.com/ksaad20/OrbitMesh/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/ksaad20/OrbitMesh)](https://github.com/ksaad20/OrbitMesh/pulls)
+[![GitHub stars](https://img.shields.io/github/stars/ksaad20/OrbitMesh?style=social)](https://github.com/ksaad20/OrbitMesh/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/ksaad20/OrbitMesh?style=social)](https://github.com/ksaad20/OrbitMesh/network/members)
+[![GitHub contributors](https://img.shields.io/github/contributors/ksaad20/OrbitMesh)](https://github.com/ksaad20/OrbitMesh/graphs/contributors)
+[![Last Commit](https://img.shields.io/github/last-commit/ksaad20/OrbitMesh)](https://github.com/ksaad20/OrbitMesh/commits/main)
+[![Repo Size](https://img.shields.io/github/repo-size/ksaad20/OrbitMesh)](https://github.com/ksaad20/OrbitMesh)
+[![Code Size](https://img.shields.io/github/languages/code-size/ksaad20/OrbitMesh)](https://github.com/ksaad20/OrbitMesh)
+[![Top Language](https://img.shields.io/github/languages/top/ksaad20/OrbitMesh)](https://github.com/ksaad20/OrbitMesh)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/ksaad20/OrbitMesh/badge)](https://securityscorecards.dev/viewer/?uri=github.com/ksaad20/OrbitMesh)
+[![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://ksaad20.github.io/OrbitMesh/)
+
 <p align="center">
   <strong>An Open-Source Operating System for Small Satellites.</strong>
 </p>
