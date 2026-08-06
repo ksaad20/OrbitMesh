@@ -17,7 +17,7 @@ include(CTest)
 
 add_executable(
     orbitmesh_tests
-
+    main.c
 #   test_version.c
     test_kernel.c
     test_scheduler.c
@@ -68,7 +68,7 @@ target_compile_features(
 )
 
 #------------------------------------------------------------------------------
-# Warnings
+# Compiler Warnings
 #------------------------------------------------------------------------------
 
 if(MSVC)
@@ -77,6 +77,7 @@ if(MSVC)
         orbitmesh_tests
         PRIVATE
             /W4
+            /WX
     )
 
 else()
@@ -87,6 +88,17 @@ else()
             -Wall
             -Wextra
             -Wpedantic
+            -Wshadow
+            -Wconversion
+            -Wsign-conversion
+            -Wdouble-promotion
+            -Wformat=2
+            -Wundef
+            -Wcast-align
+            -Wwrite-strings
+            -Wstrict-prototypes
+            -Wmissing-prototypes
+            -Wmissing-declarations
             -Werror
     )
 
