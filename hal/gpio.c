@@ -94,55 +94,56 @@ om_gpio_configure(
 }
 
 
-om_error_t
-om_gpio_write(
-    om_pin_t pin,
-    om_gpio_level_t level)
+static void
+test_gpio_write(void)
 {
-    if (pin >= OM_GPIO_MAX_PINS)
+    const om_gpio_config_t config =
     {
-        return OM_ERROR_INVALID_ARGUMENT;
-    }
+        .pin = 1U,
+        .mode = OM_GPIO_OUTPUT,
+        .pull = OM_GPIO_NO_PULL,
+    };
 
-    if (!g_gpio_pins[pin].configured)
-    {
-        return OM_ERROR_INVALID_STATE;
-    }
+    int result = om_gpio_configure(&config);
+    assert(result == OM_SUCCESS);
 
-    if (g_gpio_pins[pin].mode != OM_GPIO_OUTPUT)
-    {
-        return OM_ERROR_INVALID_STATE;
-    }
+    result = om_gpio_write(
+        1U,
+        OM_GPIO_HIGH
+    );
 
-    g_gpio_pins[pin].level = level;
-
-    return OM_SUCCESS;
+    assert(result == OM_SUCCESS);
 }
 
 
-om_error_t
-om_gpio_read(
-    om_pin_t pin,
-    om_gpio_level_t *level)
+static void
+test_gpio_read(void)
 {
-    if (level == NULL)
+    const om_gpio_config_t config =
     {
-        return OM_ERROR_NULL_POINTER;
-    }
+        .pin = 1U,
+        .mode = OM_GPIO_OUTPUT,
+        .pull = OM_GPIO_NO_PULL,
+    };
 
-    if (pin >= OM_GPIO_MAX_PINS)
-    {
-        return OM_ERROR_INVALID_ARGUMENT;
-    }
+    int result = om_gpio_configure(&config);
+    assert(result == OM_SUCCESS);
 
-    if (!g_gpio_pins[pin].configured)
-    {
-        return OM_ERROR_INVALID_STATE;
-    }
+    result = om_gpio_write(
+        1U,
+        OM_GPIO_HIGH
+    );
+    assert(result == OM_SUCCESS);
 
-    *level = g_gpio_pins[pin].level;
+    om_gpio_level_t level = OM_GPIO_LOW;
 
-    return OM_SUCCESS;
+    result = om_gpio_read(
+        1U,
+        &level
+    );
+    assert(result == OM_SUCCESS);
+
+    assert(level == OM_GPIO_HIGH);
 }
 
 
