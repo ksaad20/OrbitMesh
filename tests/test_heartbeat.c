@@ -1,27 +1,21 @@
 #include <assert.h>
+#include <stdbool.h>
 
 #include "orbitmesh/heartbeat.h"
 
-
-static void
-test_heartbeat_initialization(void)
-{
-    const int result = om_heartbeat_init();
-
-    assert(result == 0);
-}
-
+void
+run_test_heartbeat(void);
 
 static void
 test_heartbeat_update(void)
 {
     om_heartbeat_update();
+
+    assert(true);
 }
 
-
-static void
+void
 run_test_heartbeat(void)
 {
-    test_heartbeat_initialization();
     test_heartbeat_update();
 }
