@@ -18,6 +18,3 @@ if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/basic_satellite/CMakeLists.txt")
     )
 
 endif()
-
-
-
