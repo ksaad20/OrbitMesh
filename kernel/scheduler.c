@@ -19,6 +19,7 @@ om_error_t
 om_scheduler_init(void)
 {
     g_scheduler_state = OM_SCHEDULER_STOPPED;
+
     return OM_SUCCESS;
 }
 
@@ -26,6 +27,7 @@ om_error_t
 om_scheduler_start(void)
 {
     g_scheduler_state = OM_SCHEDULER_RUNNING;
+
     return OM_SUCCESS;
 }
 
@@ -33,6 +35,7 @@ om_error_t
 om_scheduler_stop(void)
 {
     g_scheduler_state = OM_SCHEDULER_STOPPED;
+
     return OM_SUCCESS;
 }
 
@@ -83,4 +86,15 @@ om_scheduler_run(void)
     }
 
     g_current_task = NULL;
+}
+
+void
+om_scheduler_run_once(void)
+{
+    if (g_scheduler_state != OM_SCHEDULER_RUNNING)
+    {
+        return;
+    }
+
+    om_scheduler_run();
 }
