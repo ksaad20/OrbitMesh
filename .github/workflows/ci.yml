@@ -1,68 +1,66 @@
 name: OrbitMesh CI
 
-
 on:
   push:
     branches:
       - main
-
+      - develop
   pull_request:
     branches:
       - main
+      - develop
 
-
+permissions:
+  contents: read
 
 jobs:
-
   build-and-test:
-
-    name: Build and Test
-
+    name: Build and Test (${{ matrix.compiler }})
     runs-on: ubuntu-latest
 
-
     strategy:
+      fail-fast: false
       matrix:
         compiler:
           - gcc
           - clang
 
-
-
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
-
-
       - name: Install dependencies
         run: |
-          sudo apt update
-          sudo apt install -y \
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            clang \
             cmake \
-            ninja-build \
-            ${{ matrix.compiler }}
+            ninja-build
 
+      - name: Configure compiler
+        run: |
+          if [ "${{ matrix.compiler }}" = "gcc" ]; then
+            echo "CC=gcc" >> "$GITHUB_ENV"
+          else
+            echo "CC=clang" >> "$GITHUB_ENV"
+          fi
 
-
-      - name: Configure build
+      - name: Configure CMake
         run: |
           cmake \
+            -S . \
             -B build \
             -G Ninja \
             -DCMAKE_BUILD_TYPE=Debug \
-            -DCMAKE_C_COMPILER=${{ matrix.compiler }}
+            -DCMAKE_C_STANDARD=17 \
+            -DBUILD_TESTING=ON
 
-
-
-      - name: Build OrbitMesh
+      - name: Build
         run: |
-          cmake --build build
-
-
+          cmake --build build --parallel
 
       - name: Run tests
+        working-directory: build
         run: |
-          cd build
           ctest --output-on-failure
