@@ -23,10 +23,12 @@ om_heartbeat_init(void)
 /**
  * @brief Update the heartbeat.
  */
-void
+om_error_t
 om_heartbeat_update(void)
 {
     heartbeat_counter++;
+
+    return OM_SUCCESS;
 }
 
 /**
