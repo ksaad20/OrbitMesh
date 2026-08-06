@@ -7,12 +7,10 @@
 
 #include "orbitmesh/heartbeat.h"
 
-
 static om_tick_t heartbeat_counter = 0U;
 
-
 /**
- * @brief Initialize heartbeat service.
+ * @brief Initialize the heartbeat service.
  */
 om_error_t
 om_heartbeat_init(void)
@@ -22,21 +20,17 @@ om_heartbeat_init(void)
     return OM_SUCCESS;
 }
 
-
 /**
- * @brief Generate heartbeat.
+ * @brief Update the heartbeat.
  */
-om_error_t
-om_heartbeat_signal(void)
+void
+om_heartbeat_update(void)
 {
     heartbeat_counter++;
-
-    return OM_SUCCESS;
 }
 
-
 /**
- * @brief Return heartbeat count.
+ * @brief Return the heartbeat count.
  */
 om_tick_t
 om_heartbeat_count(void)
@@ -44,9 +38,8 @@ om_heartbeat_count(void)
     return heartbeat_counter;
 }
 
-
 /**
- * @brief Reset heartbeat counter.
+ * @brief Reset the heartbeat counter.
  */
 om_error_t
 om_heartbeat_reset(void)
